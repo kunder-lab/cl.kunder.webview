@@ -27,12 +27,12 @@ It's possible to modify this plugin to allow multiple webviews.
 
 To open a new webview, just call in your app's js:
 
-  webview.Show(URL);
+    webview.Show(URL);
 
 Where `URL` is the path to the page to be opened. In Android, the plugin automatically adds the prefix `file:///android_asset/www/`
 
 Then, to close the second webview and return to the main view, call in your second webview (the opened webview, not the main webview):
 
-  webview.Close();
+    webview.Close();
 
 This will close and destroy the second webview.
