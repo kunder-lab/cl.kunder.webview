@@ -7,7 +7,7 @@
 
 @implementation WebViewPlugin
 
-@synthesize WebViewController;
+@synthesize webViewController;
 
 - (void)subscribeCallback:(CDVInvokedUrlCommand*)command
 {
@@ -29,10 +29,10 @@
   [self.commandDelegate runInBackground:^{
     @try {
       dispatch_async(dispatch_get_main_queue(), ^{
-        WebViewController = [[WebViewController alloc] init];
-        WebViewController.delegate = self; // esto es para poder recibir el evento de que webView se cerro
-        WebViewController.startPage = url;
-        [self.WebViewController presentWebViewController:WebViewController animated:YES completion:nil];
+          webViewController = [[WebViewController alloc] init];
+          webViewController.delegate = self; // esto es para poder recibir el evento de que webView se cerro
+          webViewController.startPage = url;
+          [self.viewController presentViewController:webViewController animated:YES completion:nil];
       });
 
       CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -52,7 +52,7 @@
     @try {
 
       dispatch_async(dispatch_get_main_queue(), ^{
-        [self.WebViewController dismissWebViewControllerAnimated:YES completion:nil];
+        [self.viewController dismissViewControllerAnimated:YES completion:nil];
         [self dispose];
       });
 
@@ -69,7 +69,7 @@
 
 -(void)webViewFinished{
   NSLog(@"webViewFinished");
-  WebViewController = nil;
+  webViewController = nil;
 
   CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:webViewFinishedCallBack];

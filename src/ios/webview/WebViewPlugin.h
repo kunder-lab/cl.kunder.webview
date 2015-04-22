@@ -19,7 +19,7 @@ under the License.
 
 #import <UIKit/UIKit.h>
 #import <Cordova/CDVPlugin.h>
-#import <Cordova/CDVWebViewController.h>
+#import <Cordova/CDVViewController.h>
 
 @class WebViewController;
 
@@ -32,7 +32,7 @@ under the License.
 {
   @private NSString* webViewFinishedCallBack;
 }
-@property (nonatomic, retain) WebViewController* WebViewController;
+@property (nonatomic, retain) WebViewController* webViewController;
 
 - (void)subscribeCallback:(CDVInvokedUrlCommand*)command;
 - (void)show:(CDVInvokedUrlCommand*)command;
@@ -42,7 +42,7 @@ under the License.
 
 @end
 
-@interface WebViewController : CDVWebViewController
+@interface WebViewController : CDVViewController
 {}
   @property (nonatomic, assign) id  delegate;
   - (void)viewDidDisappear:(BOOL)animated;
