@@ -1,41 +1,46 @@
-package cl.kunder.webview;
+package cl.bancochile.webview;
 
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Bitmap;
+
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
+
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebView;
+
 import android.widget.LinearLayout;
 
 import org.apache.cordova.ConfigXmlParser;
-import org.apache.cordova.CordovaActivity;
-import org.apache.cordova.CordovaChromeClient;
+import org.apache.cordova.CordovaInterfaceImpl;
+import org.apache.cordova.CordovaPreferences;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaInterface;
-import org.apache.cordova.CordovaWebViewClient;
-import org.apache.cordova.LinearLayoutSoftKeyboardDetect;
+
+import org.apache.cordova.CordovaWebViewImpl;
 import org.apache.cordova.PluginEntry;
-import org.apache.cordova.Whitelist;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.apache.cordova.LOG;
+
+import org.apache.cordova.engine.*;
+
+
 
 public class WebViewPlugin extends CordovaPlugin {
 
   private static final String LOG_TAG = "WebViewPlugin";
 
   private static Dialog webViewDialog;
+
+  static SystemWebView webView;
 
   public WebViewPlugin() {
 
@@ -106,47 +111,64 @@ public class WebViewPlugin extends CordovaPlugin {
       public void run() {
         Activity activity = plugin.cordova.getActivity();
         Context context = activity.getApplicationContext();
+        //esta es la webView que cargaría la URL
+        webView = new SystemWebView(context);
+        CordovaWebView webInterface = new CordovaWebViewImpl(new SystemWebViewEngine(webView));
+        CordovaInterface systemInterface = new CordovaInterfaceImpl(activity);
+        CordovaPreferences cordovaPreferences = new CordovaPreferences();
 
-        CordovaWebView otherWebView = new CordovaWebView(context);
-        CordovaWebViewClient client = otherWebView.makeWebViewClient((CordovaActivity)activity);
-        CordovaChromeClient chrome = otherWebView.makeWebChromeClient((CordovaActivity)activity);
+
+        SystemWebViewEngine systemWebViewEngine = new SystemWebViewEngine(webView);
+
+        //        CordovaWebView otherWebView = new CordovaWebView(context);
+        //        CordovaWebViewClient client = otherWebView.makeWebViewClient((CordovaActivity)activity);
+        //        CordovaChromeClient chrome = otherWebView.makeWebChromeClient((CordovaActivity)activity);
 
         ConfigXmlParser parser = new ConfigXmlParser();
-        parser.parse((CordovaActivity)activity);
+        parser.parse(activity);
 
-        Whitelist internalWhitelist = parser.getInternalWhitelist();
-        Whitelist externalWhitelist = parser.getExternalWhitelist();
+        //        Whitelist internalWhitelist = parser.getInternalWhitelist();
+        //        Whitelist externalWhitelist = parser.getExternalWhitelist();
         ArrayList<PluginEntry> pluginEntries = parser.getPluginEntries();
 
-        otherWebView.init(
-        (CordovaActivity)activity,
-        client,
-        chrome,
-        pluginEntries,
-        internalWhitelist,
-        externalWhitelist,
-        preferences);
+        webInterface.init(systemInterface,pluginEntries, parser.getPreferences());
 
+        //        otherWebView.init(
+        //        (CordovaActivity)activity,
+        //        client,
+        //        chrome,
+        //        pluginEntries,
+        //        internalWhitelist,
+        //        externalWhitelist,
+        //        preferences);
 
-        otherWebView.loadUrl("file:///android_asset/www/" + url);
+        webView.loadUrl("file:///android_asset/www/" + url);
+        //otherWebView.loadUrl("file:///android_asset/www/" + url);
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);;
         int width = displaymetrics.widthPixels;
         int height = displaymetrics.heightPixels;
-
-        LinearLayout root = new LinearLayoutSoftKeyboardDetect((CordovaActivity)activity, width, height);
+        LinearLayout root = new LinearLayout(activity);
+        //LinearLayout root = new LinearLayoutSoftKeyboardDetect((CordovaActivity)activity, width, height);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.MATCH_PARENT, 0.0F));
 
-        otherWebView.setId(101);
-        otherWebView.setLayoutParams(new LinearLayout.LayoutParams(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        1.0F));
+        //webView.setId(101);
 
-        root.addView((View) otherWebView);
+        webView.setLayoutParams(new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            1.0F));
+        //otherWebView.setId(101);
+        //        otherWebView.setLayoutParams(new LinearLayout.LayoutParams(
+        //        ViewGroup.LayoutParams.MATCH_PARENT,
+        //        ViewGroup.LayoutParams.MATCH_PARENT,
+        //        1.0F));
+
+        root.addView((View) webView);
+        //root.addView((View) otherWebView);
 
         webViewDialog = new Dialog(activity, android.R.style.Theme_NoTitleBar);
         webViewDialog.getWindow().getAttributes().windowAnimations = android.R.style.Animation_Dialog;
@@ -176,7 +198,7 @@ public class WebViewPlugin extends CordovaPlugin {
       public void run() {
         if(webViewDialog != null && webViewDialog.isShowing()) {
           webViewDialog.dismiss();
-          plugin.webView.destroy();
+          webView.destroy();
         }
       }
     });
