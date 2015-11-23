@@ -42,6 +42,8 @@ public class WebViewPlugin extends CordovaPlugin {
 
   static SystemWebView webView;
 
+  private static CallbackContext subscribeCallbackContext = null;
+
   public WebViewPlugin() {
 
   }
@@ -92,6 +94,11 @@ public class WebViewPlugin extends CordovaPlugin {
       JSONObject r = new JSONObject();
       r.put("responseCode", "ok");
       callbackContext.success(r);
+    }
+
+    else if(action.equals("subscribeCallback")){
+      LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
+      subscribeCallbackContext = callbackContext;
     }
 
     else {
@@ -199,6 +206,11 @@ public class WebViewPlugin extends CordovaPlugin {
         if(webViewDialog != null && webViewDialog.isShowing()) {
           webViewDialog.dismiss();
           webView.destroy();
+          if(subscribeCallbackContext != null){
+            LOG.d(LOG_TAG, "Calling subscribeCallbackContext success");
+            subscribeCallbackContext.success();
+            subscribeCallbackContext = null;
+          }
         }
       }
     });
