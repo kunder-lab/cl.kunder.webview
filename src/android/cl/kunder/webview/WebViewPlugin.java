@@ -1,4 +1,4 @@
-package cl.bancochile.webview;
+package cl.kunder.webview;
 
 import java.util.ArrayList;
 
