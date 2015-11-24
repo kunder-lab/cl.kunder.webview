@@ -12,7 +12,6 @@
 
     It's possible to modify this plugin to allow multiple webviews.
   </description>
-  
   <repo>https://github.com/arturokunder/cl.kunder.webview.git</repo>
   <issue>https://github.com/arturokunder/cl.kunder.webview/issues</issue>
   <license>Apache 2.0</license>
@@ -36,8 +35,13 @@
         <param name="android-package" value="cl.kunder.webview.WebViewPlugin"/>
       </feature>
     </config-file>
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+      <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale" android:label="@string/activity_name" android:launchMode="singleTop" android:name="cl.kunder.webview.WebViewActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar" android:windowSoftInputMode="adjustResize" android:exported="true">
+      </activity>
+    </config-file>
 
     <source-file src="src/android/cl/kunder/webview/WebViewPlugin.java" target-dir="src/cl/kunder/webview" />
+    <source-file src="src/android/cl/kunder/webview/WebViewActivity.java" target-dir="src/cl/kunder/webview" />
 
   </platform>
 
