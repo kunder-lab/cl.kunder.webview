@@ -1,4 +1,4 @@
-package cl.kunder.webview;
+package cl.bancochile.webview;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 
+import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,12 +38,7 @@ import org.apache.cordova.engine.*;
 public class WebViewPlugin extends CordovaPlugin {
 
   private static final String LOG_TAG = "WebViewPlugin";
-
-  private static Dialog webViewDialog;
-
-  static SystemWebView webView;
-
-  private static CallbackContext subscribeCallbackContext = null;
+  private CallbackContext closeCallback;
 
   public WebViewPlugin() {
 
@@ -96,11 +92,6 @@ public class WebViewPlugin extends CordovaPlugin {
       callbackContext.success(r);
     }
 
-    else if(action.equals("subscribeCallback")){
-      LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
-      subscribeCallbackContext = callbackContext;
-    }
-
     else {
       return false;
     }
@@ -110,109 +101,14 @@ public class WebViewPlugin extends CordovaPlugin {
 
   private void showWebView(final String url) {
     LOG.d(LOG_TAG, "Url: " + url);
-
-    final CordovaPlugin plugin = this;
-
-    plugin.cordova.getActivity().runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        Activity activity = plugin.cordova.getActivity();
-        Context context = activity.getApplicationContext();
-        //esta es la webView que cargaría la URL
-        webView = new SystemWebView(context);
-        CordovaWebView webInterface = new CordovaWebViewImpl(new SystemWebViewEngine(webView));
-        CordovaInterface systemInterface = new CordovaInterfaceImpl(activity);
-        CordovaPreferences cordovaPreferences = new CordovaPreferences();
-
-
-        SystemWebViewEngine systemWebViewEngine = new SystemWebViewEngine(webView);
-
-        //        CordovaWebView otherWebView = new CordovaWebView(context);
-        //        CordovaWebViewClient client = otherWebView.makeWebViewClient((CordovaActivity)activity);
-        //        CordovaChromeClient chrome = otherWebView.makeWebChromeClient((CordovaActivity)activity);
-
-        ConfigXmlParser parser = new ConfigXmlParser();
-        parser.parse(activity);
-
-        //        Whitelist internalWhitelist = parser.getInternalWhitelist();
-        //        Whitelist externalWhitelist = parser.getExternalWhitelist();
-        ArrayList<PluginEntry> pluginEntries = parser.getPluginEntries();
-
-        webInterface.init(systemInterface,pluginEntries, parser.getPreferences());
-
-        //        otherWebView.init(
-        //        (CordovaActivity)activity,
-        //        client,
-        //        chrome,
-        //        pluginEntries,
-        //        internalWhitelist,
-        //        externalWhitelist,
-        //        preferences);
-
-        webView.loadUrl("file:///android_asset/www/" + url);
-        //otherWebView.loadUrl("file:///android_asset/www/" + url);
-
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);;
-        int width = displaymetrics.widthPixels;
-        int height = displaymetrics.heightPixels;
-        LinearLayout root = new LinearLayout(activity);
-        //LinearLayout root = new LinearLayoutSoftKeyboardDetect((CordovaActivity)activity, width, height);
-        root.setOrientation(LinearLayout.VERTICAL);
-        root.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.MATCH_PARENT, 0.0F));
-
-        //webView.setId(101);
-
-        webView.setLayoutParams(new LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            1.0F));
-        //otherWebView.setId(101);
-        //        otherWebView.setLayoutParams(new LinearLayout.LayoutParams(
-        //        ViewGroup.LayoutParams.MATCH_PARENT,
-        //        ViewGroup.LayoutParams.MATCH_PARENT,
-        //        1.0F));
-
-        root.addView((View) webView);
-        //root.addView((View) otherWebView);
-
-        webViewDialog = new Dialog(activity, android.R.style.Theme_NoTitleBar);
-        webViewDialog.getWindow().getAttributes().windowAnimations = android.R.style.Animation_Dialog;
-        webViewDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        webViewDialog.setCancelable(true);
-
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(webViewDialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-
-        webViewDialog.setContentView(root);
-        webViewDialog.show();
-        webViewDialog.getWindow().setAttributes(lp);
-      }
-    });
-
+    Intent i = new Intent(this.cordova.getActivity(), WebViewActivity.class);
+    i.putExtra("url", url);
+    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    this.cordova.getActivity().getApplicationContext().startActivity(i);
   }
 
   private void hideWebView() {
-    // Aquí estamos parados en cordova.webview
-    // otherWebView es el objeto webview mirado desde la webview original
-    final CordovaPlugin plugin = this;
-
-    plugin.cordova.getActivity().runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        if(webViewDialog != null && webViewDialog.isShowing()) {
-          webViewDialog.dismiss();
-          webView.destroy();
-          if(subscribeCallbackContext != null){
-            LOG.d(LOG_TAG, "Calling subscribeCallbackContext success");
-            subscribeCallbackContext.success();
-            subscribeCallbackContext = null;
-          }
-        }
-      }
-    });
+    LOG.d(LOG_TAG, "hideWebView");
+    this.cordova.getActivity().finish();
   }
 }
