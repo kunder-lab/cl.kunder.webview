@@ -39,6 +39,7 @@ public class WebViewPlugin extends CordovaPlugin {
 
   private static final String LOG_TAG = "WebViewPlugin";
   private CallbackContext closeCallback;
+  private static CallbackContext subscribeCallbackContext = null;
 
   public WebViewPlugin() {
 
@@ -92,6 +93,11 @@ public class WebViewPlugin extends CordovaPlugin {
       callbackContext.success(r);
     }
 
+    else if(action.equals("subscribeCallback")){
+      LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
+      subscribeCallbackContext = callbackContext;
+    }
+
     else {
       return false;
     }
@@ -110,5 +116,10 @@ public class WebViewPlugin extends CordovaPlugin {
   private void hideWebView() {
     LOG.d(LOG_TAG, "hideWebView");
     this.cordova.getActivity().finish();
+    if(subscribeCallbackContext != null){
+      LOG.d(LOG_TAG, "Calling subscribeCallbackContext success");
+      subscribeCallbackContext.success();
+      subscribeCallbackContext = null;
+    }
   }
 }
