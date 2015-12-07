@@ -27,7 +27,7 @@ It's possible to modify this plugin to allow multiple webviews.
 
 First, add the plugin to your cordova application
 
-    cordova plugin add github.com/arturokunder/cl.kunder.webview.git
+    cordova plugin add github.com/kunder-lab/cl.kunder.webview.git
 
 To open a new webview, just call in your app's js:
 
