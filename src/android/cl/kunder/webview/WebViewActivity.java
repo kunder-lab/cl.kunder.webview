@@ -10,6 +10,6 @@ public class WebViewActivity extends CordovaActivity {
         super.onCreate(savedInstanceState);
         Bundle b = getIntent().getExtras();
         String url = b.getString("url");
-        loadUrl("file:///android_asset/www/"+url);
+        loadUrl((url.matches("^.*://.*$")?"":"file:///android_asset/www/")+url);
     }
 }
