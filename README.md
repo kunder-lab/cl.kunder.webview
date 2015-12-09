@@ -23,20 +23,60 @@ This webview is totally independent from the main webview, but allows you tu acc
 
 It's possible to modify this plugin to allow multiple webviews.
 
-## How to use it
+Report issues on [github issue tracker](https://github.com/kunder-lab/cl.kunder.webview/issues)
 
-First, add the plugin to your cordova application
-
+## Installation
+```
     cordova plugin add github.com/kunder-lab/cl.kunder.webview.git
+```
+
+## Supported Platforms
+- Android
+- iOS
+
+
+## Quick Start
 
 To open a new webview, just call in your app's js:
-
+```javascript
     webview.Show(URL);
+```
 
 Where `URL` is the path to the page to be opened. In Android, the plugin automatically adds the prefix `file:///android_asset/www/`
 
 Then, to close the second webview and return to the main view, call in your second webview (the opened webview, not the main webview):
-
+```javascript
     webview.Close();
+```
 
 This will close and destroy the second webview.
+
+# webView
+
+The `webView`object provides a way to manage a second webview inside your cordova app. This could be usefull if you want to open a second page as a popup or you want to load new content that is totally unrelated to the main view, but still have the ability to use cordova plugins.
+
+The main difference with inAppBrowser plugin is that cl.kunder.webview plugin can access and use all cordova plguins installed in your app.
+
+## Methods
+
+- __Show__: Opens a new webView 
+- __Close__: Close and destroy the webView
+- __Hide__: Same as __Close__
+- __SubscribeCallback__: Suscribes a callback that is fired when webView is closed
+
+### Show
+__Parameters__:
+- __url__: The url to be opened. In Android, the plugin automatically adds the prefix `file:///android_asset/www/`. _(String)_
+- __successCallback__: Is triggered when the plugin is succesfully called. _(Function)_
+- __errorCallback__: Is triggered when the plugin fails to be called or is called with error. _(Function)_
+
+### Close/Hide
+__Parameters__:
+- __successCallback__: Is triggered when the plugin is succesfully called. _(Function)_
+- __errorCallback__: Is triggered when the plugin fails to be called or is called with error. _(Function)_
+
+### SubscribeCallback
+Suscribes a callback that is triggered when a webView is closed.
+__Parameters__:
+- __successCallback__: The callback that will be called when a webview is closed. _(Function)_
+- __errorCallback__: Is triggered when the plugin fails to be called or is called with error. _(Function)_
