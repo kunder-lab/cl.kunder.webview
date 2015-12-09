@@ -66,7 +66,7 @@ The main difference with inAppBrowser plugin is that cl.kunder.webview plugin ca
 
 ### Show
 __Parameters__:
-- __url__: The url to be opened. In Android, the plugin automatically adds the prefix `file:///android_asset/www/`. _(String)_
+- __url__: The url to be opened. In Android, if the url does not contain a http:// or https:// prefix, the prefix `file:///android_asset/www/` will be automatically added. _(String)_
 - __successCallback__: Is triggered when the plugin is succesfully called. _(Function)_
 - __errorCallback__: Is triggered when the plugin fails to be called or is called with error. _(Function)_
 
