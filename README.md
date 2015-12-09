@@ -77,6 +77,7 @@ __Parameters__:
 
 ### SubscribeCallback
 Suscribes a callback that is triggered when a webView is closed.
+
 __Parameters__:
 - __successCallback__: The callback that will be called when a webview is closed. _(Function)_
 - __errorCallback__: Is triggered when the plugin fails to be called or is called with error. _(Function)_
