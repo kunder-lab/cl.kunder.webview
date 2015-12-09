@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="cl.kunder.webview"
-  version="2.2.0">
+  version="2.2.1">
   <name>Cordova Second Webview</name>
   <author href="http://kunder.cl">kunder</author>
   <description>
