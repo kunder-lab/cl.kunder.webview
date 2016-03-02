@@ -58,5 +58,18 @@
     <source-file src="src/ios/webview/WebViewPlugin.m" />
   </platform>
 
+  <!-- browser -->
+  <platform name="browser">
+    <config-file target="config.xml" parent="/*">
+        <feature name="WebViewPlugin">
+            <param name="browser-package" value="WebViewPluginProxy" />
+        </feature>
+    </config-file>
+
+    <js-module src="src/browser/WebViewPluginProxy.js" name="WebViewPluginProxy">
+        <runs />
+    </js-module>
+  </platform>
+
 
 </plugin>

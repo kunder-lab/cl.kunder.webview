@@ -1,6 +1,6 @@
-/*global elu, module */
+/*global cordova, module */
+'use strict';
 module.exports = (function() {
-  'use strict';
 
 
   var _show = function(url, successCallback, errorCallback) {
