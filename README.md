@@ -82,3 +82,17 @@ Suscribes a callback that is triggered when a webView is closed.
 __Parameters__:
 - __successCallback__: The callback that will be called when a webview is closed. _(Function)_
 - __errorCallback__: Is triggered when the plugin fails to be called or is called with error. _(Function)_
+
+### SubscribeExitCallback (Android only)
+Subscribes an exit callback that is triggered when ExitApp method is called.
+
+__Parameters__:
+- __successCallback__: The callback that will be called when a webview is closed. _(Function)_
+- __errorCallback__: Is triggered when the plugin fails to be called or is called with error. This can be empty function _(Function)_
+
+### ExitApp (Android)
+This method execute the subscribed exit callback if exist. Then close the webview.
+This method is usefull when onResume event is defined in your main app. You should set a flag in subscribeExitCallback success method. Then in onResume event you should verify the flag value. Finally the main app should call ionic.Platform.exitApp() method to close the app.
+
+### ExitApp (iOS)
+This method execute objective-C exit(0) method.
