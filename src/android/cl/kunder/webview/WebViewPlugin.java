@@ -86,11 +86,10 @@ public class WebViewPlugin extends CordovaPlugin {
     else if(action.equals("exitApp")){
       LOG.d(LOG_TAG, "Exiting app?");
       if(subscribeExitCallbackContext != null){
-        this.cordova.getActivity().finish();
         subscribeExitCallbackContext.success();
         subscribeExitCallbackContext = null;
-        
       }
+      this.cordova.getActivity().finish();
 
     }
 
