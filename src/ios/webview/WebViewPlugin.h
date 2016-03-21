@@ -37,7 +37,7 @@ under the License.
 - (void)subscribeCallback:(CDVInvokedUrlCommand*)command;
 - (void)show:(CDVInvokedUrlCommand*)command;
 - (void)hide:(CDVInvokedUrlCommand*)command;
-
+- (void)exitApp:(CDVInvokedUrlCommand*)command;
 - (void)webViewFinished;
 
 @end
