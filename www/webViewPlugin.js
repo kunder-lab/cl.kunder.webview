@@ -15,12 +15,22 @@ module.exports = (function() {
     cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'subscribeCallback', []);
   };
 
+  var _subscribeExitCallback = function(successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'subscribeExitCallback', []);
+  };
+
+  var _exitApp = function() {
+    cordova.exec(function(){},function(){}, 'WebViewPlugin', 'exitApp', []);
+  };
+
 
   return {
     Show: _show,
     Hide: _hide,
     Close: _hide,
-    SubscribeCallback: _subscribeCallback
+    SubscribeCallback: _subscribeCallback,
+    SubscribeExitCallback: _subscribeExitCallback,
+    ExitApp: _exitApp
   };
 
 })();

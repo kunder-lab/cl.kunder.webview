@@ -1,45 +1,25 @@
 package cl.kunder.webview;
 
-import java.util.ArrayList;
-
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 
 import android.content.Intent;
-import android.util.DisplayMetrics;
-import android.view.View;
-import android.view.ViewGroup;
 
-import android.view.Window;
-import android.view.WindowManager;
-
-import android.widget.LinearLayout;
-
-import org.apache.cordova.ConfigXmlParser;
-import org.apache.cordova.CordovaInterfaceImpl;
-import org.apache.cordova.CordovaPreferences;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaInterface;
 
-import org.apache.cordova.CordovaWebViewImpl;
-import org.apache.cordova.PluginEntry;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.apache.cordova.LOG;
-
-import org.apache.cordova.engine.*;
 
 
 
 public class WebViewPlugin extends CordovaPlugin {
 
   private static final String LOG_TAG = "WebViewPlugin";
-  private CallbackContext closeCallback;
   private static CallbackContext subscribeCallbackContext = null;
+  private static CallbackContext subscribeExitCallbackContext = null;
 
   public WebViewPlugin() {
 
@@ -96,6 +76,22 @@ public class WebViewPlugin extends CordovaPlugin {
     else if(action.equals("subscribeCallback")){
       LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
       subscribeCallbackContext = callbackContext;
+    }
+
+    else if(action.equals("subscribeExitCallback")){
+      LOG.d(LOG_TAG, "Subscribing Cordova ExitCallbackContext");
+      subscribeExitCallbackContext = callbackContext;
+    }
+
+    else if(action.equals("exitApp")){
+      LOG.d(LOG_TAG, "Exiting app?");
+      if(subscribeExitCallbackContext != null){
+        this.cordova.getActivity().finish();
+        subscribeExitCallbackContext.success();
+        subscribeExitCallbackContext = null;
+        
+      }
+
     }
 
     else {

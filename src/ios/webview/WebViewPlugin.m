@@ -67,6 +67,10 @@
   }];
 }
 
+- (void)exitApp:(CDVInvokedUrlCommand*)command{
+  exit(0);
+}
+
 -(void)webViewFinished{
   NSLog(@"webViewFinished");
   webViewController = nil;
