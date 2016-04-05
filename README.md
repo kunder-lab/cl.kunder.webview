@@ -70,7 +70,7 @@ __Parameters__:
 - __url__: The url to be opened. In Android, if the url does not contain a protocol prefix (`*://` or `javascript:*`), the prefix `file:///android_asset/www/` will be automatically added. _(String)_
 - __successCallback__: Is triggered when the plugin is succesfully called. _(Function)_
 - __errorCallback__: Is triggered when the plugin fails to be called or is called with error. _(Function)_
-- loading: Should show a loading dialog while webview is loading. _(Boolean optional)_
+- __loading__: Should show a loading dialog while webview is loading. _(Boolean optional)_
 
 ### Close/Hide
 __Parameters__:
