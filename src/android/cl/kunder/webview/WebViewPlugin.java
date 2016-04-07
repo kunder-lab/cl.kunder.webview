@@ -53,9 +53,15 @@ public class WebViewPlugin extends CordovaPlugin {
     if (action.equals("show") && args.length() > 0) {
       LOG.d(LOG_TAG, "Show Web View");
       final String url = args.getString(0);
+      Boolean shouldShowLoading = false;
+      try{
+        shouldShowLoading = args.getBoolean(1);
+      }
+      catch(Exception e){
 
+      }
       if(!"".equals(url)) {
-        showWebView(url);
+        showWebView(url, shouldShowLoading);
         JSONObject r = new JSONObject();
         r.put("responseCode", "ok");
         callbackContext.success(r);
@@ -68,6 +74,20 @@ public class WebViewPlugin extends CordovaPlugin {
     else if(action.equals("hide")) {
       LOG.d(LOG_TAG, "Hide Web View");
       hideWebView();
+      JSONObject r = new JSONObject();
+      r.put("responseCode", "ok");
+      callbackContext.success(r);
+    }
+
+    else if(action.equals("hideLoading")) {
+      LOG.d(LOG_TAG, "Hide Web View Loading");
+      try{
+        WebViewActivity.hideLoading();
+      }
+      catch(Exception e){
+        LOG.e(LOG_TAG, "Error in hideLoading");
+        LOG.e(LOG_TAG, e.toString());
+      }
       JSONObject r = new JSONObject();
       r.put("responseCode", "ok");
       callbackContext.success(r);
@@ -100,10 +120,11 @@ public class WebViewPlugin extends CordovaPlugin {
     return true;
   }
 
-  private void showWebView(final String url) {
+  private void showWebView(final String url, Boolean shouldShowLoading) {
     LOG.d(LOG_TAG, "Url: " + url);
     Intent i = new Intent(this.cordova.getActivity(), WebViewActivity.class);
     i.putExtra("url", url);
+    i.putExtra("shouldShowLoading", shouldShowLoading);
     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     this.cordova.getActivity().getApplicationContext().startActivity(i);
   }
