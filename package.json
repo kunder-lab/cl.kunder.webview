@@ -1,0 +1,31 @@
+{
+  "name": "Cordova Second Webview",
+  "version": "1.2.1",
+  "description": "This cordova plugin enables you to open a second webview in your app. This webview is totally independent from the main webview, but allows you tu access plugins and other Cordova resources. It's possible to modify this plugin to allow multiple webviews.",
+  "cordova": {
+    "id": "cl.kunder.webview",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kunder-lab/cl.kunder.webview.git"
+  },
+  "keywords": [
+    "cordova",
+    "loading",
+    "indicator",
+    "spinner",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "author": "kunder",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kunder-lab/cl.kunder.webview/issues"
+  },
+  "homepage": "https://github.com/kunder-lab/cl.kunder.webview#readme"
+}
