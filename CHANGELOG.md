@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 2.3.0
+## 2.4.0
 
 ### Description
 Added support for Cordova's browser platform.
