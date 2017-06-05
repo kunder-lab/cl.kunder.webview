@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 2.4.0
+## 2.4.1
 
 ### Description
 Added compatibility for Cordova 7.
