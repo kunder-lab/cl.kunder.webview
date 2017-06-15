@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2.4.2
+
+### Description
+NPM standar fixes.
+
+### Breaking Changes
+No breaking changes on this release.
+
+### Changelog
+b49215591e38831751789f0e1b5d671e806735a4 - NPM name and IDs replaced by kunder-cordova-plugin-webview
+ba27b3b52ae5ae5aacb9fd6105bdb62c23d422ba - cambios requeridos
+67f828ce7994dde7af7242fab46de66c8827b67b - cambio de nombre siguiendo las notaciones actuales
+d967dadfaf7984529c9d4960d0740adf6cfdfee7 - se agrega version 2.4.1
+484d5b4fe546caa5981275da90c9542d0d6436c1 - corrección version plugin
+7deb9319c2680eaca952f4707b0fe84b54b9bbfb - modificación de id y name en package.json
+46e51332cf969de69e2f46f3d070538e08d70de4 - se modifica id del plugin
+7c9a47e73f07daae38e5fa12095d9ffd43fe513f - modificación variable "name" package.json
+
 ## 2.4.1
 
 ### Description
