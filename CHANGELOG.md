@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2.4.1
+
+### Description
+Cordova 7 compatibility fixes.
+
+### Breaking Changes
+No breaking changes on this release.
+
+### Changelog
+df29697a207c62afaf0fb0010432a6dde09e1c25 - corrección nombre del package
+4071f065c325f68dc2fb535fda3a908e1a2efc77 - corrección nombre plugin
+
 ## 2.4.0
 
 ### Description
