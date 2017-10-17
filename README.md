@@ -104,3 +104,7 @@ This method is usefull when onResume event is defined in your main app. You shou
 
 ### ExitApp (iOS)
 This method execute objective-C exit(0) method.
+
+### SetWebViewBehavior (iOS)
+This method adjust the size of the current webview using the iOS 11 status bar space. This method should be called at the beginning of the app.
+No parameters required. 
