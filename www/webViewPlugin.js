@@ -32,6 +32,9 @@ module.exports = (function() {
     cordova.exec(function(){},function(){}, 'WebViewPlugin', 'exitApp', []);
   };
 
+  var _setWebViewBehavior = function() {
+    cordova.exec(function(){},function(){}, 'WebViewPlugin', 'webViewAdjustmenBehavior', []);
+  };
 
   return {
     Show: _show,
@@ -40,7 +43,8 @@ module.exports = (function() {
     SubscribeCallback: _subscribeCallback,
     SubscribeExitCallback: _subscribeExitCallback,
     ExitApp: _exitApp,
-    HideLoading: _hideLoading
+    HideLoading: _hideLoading,
+    SetWebViewBehavior: _setWebViewBehavior
   };
 
 })();
