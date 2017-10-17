@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2.5.1
+
+### Description
+Add pluginInitialize method to adjust iOS 11 webview using the status bar space.
+
+### Breaking Changes
+No breaking changes on this release.
+
+### Changelog
+56abb96a8a195c97e34336a10ee5624d89a452f3 - Se añade función pluginInitialize para corregir problemas de comportamiento al abrir una nueva webview.
+
 ## 2.5.0
 
 ### Description
