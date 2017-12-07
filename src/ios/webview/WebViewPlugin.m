@@ -39,6 +39,27 @@
     }];
 }
 
+- (void)subscribeDebugCallback:(CDVInvokedUrlCommand*)command
+{
+    [self.commandDelegate runInBackground:^{
+        @try {
+            debugCallback = command.callbackId;
+        }
+        @catch (NSException *exception) {
+            NSString* reason=[exception reason];
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: reason];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
+    }];
+}
+
+- (void)load:(CDVInvokedUrlCommand*)command{
+    NSString* urlAddress =(NSString*)[command.arguments objectAtIndex:0];
+    NSURL *url = [NSURL URLWithString:urlAddress];
+    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+    [self.webViewEngine loadRequest:requestObj];
+}
+
 - (void)show:(CDVInvokedUrlCommand*)command{
   NSString* url=(NSString*)[command.arguments objectAtIndex:0];
   NSLog(@"showwebViewView %@", url);
@@ -95,6 +116,12 @@
   [self.commandDelegate sendPluginResult:pluginResult callbackId:webViewFinishedCallBack];
 }
 
+-(void)callDebugCallback{
+  NSLog(@"callDebugCallback");
+  CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  [self.commandDelegate sendPluginResult:pluginResult callbackId:debugCallback];
+}
+
 @end
 
 @implementation WebViewController
@@ -104,6 +131,22 @@
 - (id)init {
   self = [super init];
   return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureTriggered:)];
+    [tapGestureRecognizer setNumberOfTapsRequired:3];
+    [tapGestureRecognizer setNumberOfTouchesRequired:2];
+    [self.webView addGestureRecognizer:tapGestureRecognizer];
+}
+
+- (void) tapGestureTriggered: (UITapGestureRecognizer *)recognizer
+{
+    //Code to handle the gesture
+    NSLog(@"WebViewController tapGestureTriggered");
+    [delegate callDebugCallback];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

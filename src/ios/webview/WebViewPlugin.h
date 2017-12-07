@@ -31,11 +31,14 @@ under the License.
 @interface WebViewPlugin : CDVPlugin<WebViewDelegate>
 {
   @private NSString* webViewFinishedCallBack;
+  @private NSString* debugCallback;
 }
 @property (nonatomic, retain) WebViewController* webViewController;
 
 - (void)subscribeCallback:(CDVInvokedUrlCommand*)command;
+- (void)subscribeDebugCallback:(CDVInvokedUrlCommand*)command;
 - (void)show:(CDVInvokedUrlCommand*)command;
+- (void)load:(CDVInvokedUrlCommand*)command;
 - (void)hide:(CDVInvokedUrlCommand*)command;
 - (void)exitApp:(CDVInvokedUrlCommand*)command;
 - (void)webViewAdjustmenBehavior:(CDVInvokedUrlCommand*)command;
@@ -43,7 +46,7 @@ under the License.
 
 @end
 
-@interface WebViewController : CDVViewController
+@interface WebViewController <UIGestureRecognizerDelegate> : CDVViewController
 {}
   @property (nonatomic, assign) id  delegate;
   - (void)viewDidDisappear:(BOOL)animated;

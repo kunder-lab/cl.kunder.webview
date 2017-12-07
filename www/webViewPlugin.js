@@ -2,7 +2,6 @@
 'use strict';
 module.exports = (function() {
 
-
   var _show = function(url, successCallback, errorCallback, loading) {
     if(loading){
       cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'show', [url, loading]);
@@ -10,6 +9,10 @@ module.exports = (function() {
     else{
       cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'show', [url]);
     }
+  };
+
+  var _load = function(url) {
+    cordova.exec(null, null, 'WebViewPlugin', 'load', [url]);
   };
 
   var _hide = function(successCallback, errorCallback) {
@@ -22,6 +25,10 @@ module.exports = (function() {
 
   var _subscribeCallback = function(successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'subscribeCallback', []);
+  };
+
+  var _subscribeDebugCallback = function(successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'subscribeDebugCallback', []);
   };
 
   var _subscribeExitCallback = function(successCallback, errorCallback) {
@@ -38,9 +45,11 @@ module.exports = (function() {
 
   return {
     Show: _show,
+    Load: _load,
     Hide: _hide,
     Close: _hide,
     SubscribeCallback: _subscribeCallback,
+    SubscribeDebugCallback: _subscribeDebugCallback,
     SubscribeExitCallback: _subscribeExitCallback,
     ExitApp: _exitApp,
     HideLoading: _hideLoading,
