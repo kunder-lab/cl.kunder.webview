@@ -54,10 +54,8 @@
 }
 
 - (void)load:(CDVInvokedUrlCommand*)command{
-    NSString* urlAddress =(NSString*)[command.arguments objectAtIndex:0];
-    NSURL *url = [NSURL URLWithString:urlAddress];
-    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-    [self.webViewEngine loadRequest:requestObj];
+    NSString* url =(NSString*)[command.arguments objectAtIndex:0];
+    [self.webViewController loadURL:url];
 }
 
 - (void)show:(CDVInvokedUrlCommand*)command{
@@ -119,6 +117,7 @@
 -(void)callDebugCallback{
   NSLog(@"callDebugCallback");
   CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  [pluginResult setKeepCallbackAsBool:YES];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:debugCallback];
 }
 
@@ -155,4 +154,10 @@
   [delegate webViewFinished];
   delegate = nil;
 }
+
+- (void)loadURL: (NSString *)url
+{
+    [self.webViewEngine loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
+}
+
 @end

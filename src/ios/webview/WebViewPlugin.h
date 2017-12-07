@@ -50,4 +50,5 @@ under the License.
 {}
   @property (nonatomic, assign) id  delegate;
   - (void)viewDidDisappear:(BOOL)animated;
+  - (void)loadURL: (NSString *)url;
 @end
