@@ -82,7 +82,7 @@ public class WebViewActivity extends CordovaActivity {
                         }
                 }
 
-                return true;
+                return false;
             }
         });
     }
