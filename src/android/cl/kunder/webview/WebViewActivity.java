@@ -5,12 +5,17 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.cordova.CordovaActivity;
 
@@ -22,6 +27,7 @@ public class WebViewActivity extends CordovaActivity {
         super.onCreate(savedInstanceState);
         //Aqui debo crear el loading
         activity2 = this;
+        WebViewPlugin.webViewActivity = this;
         Bundle b = getIntent().getExtras();
         String url = b.getString("url");
         Boolean shouldShowLoading = false;
@@ -35,6 +41,50 @@ public class WebViewActivity extends CordovaActivity {
             showLoading();
         }
         loadUrl((url.matches("^(.*://|javascript:)[\\s\\S]*$")?"":"file:///android_asset/www/")+url);
+        appView.getView().setOnTouchListener(new View.OnTouchListener() {
+            Handler handler = new Handler();
+
+            int numberOfTaps = 0;
+            long lastTapTimeMs = 0;
+            long touchDownMs = 0;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        touchDownMs = System.currentTimeMillis();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        handler.removeCallbacksAndMessages(null);
+
+                        if ((System.currentTimeMillis() - touchDownMs) > ViewConfiguration.getTapTimeout()) {
+                            //it was not a tap
+
+                            numberOfTaps = 0;
+                            lastTapTimeMs = 0;
+                            break;
+                        }
+
+                        if (numberOfTaps > 0
+                                && (System.currentTimeMillis() - lastTapTimeMs) < ViewConfiguration.getDoubleTapTimeout()) {
+                            numberOfTaps += 1;
+                        } else {
+                            numberOfTaps = 1;
+                        }
+
+                        lastTapTimeMs = System.currentTimeMillis();
+
+                        if (numberOfTaps == 3) {
+                            Toast.makeText(getApplicationContext(), "triple", Toast.LENGTH_SHORT).show();
+                            //handle triple tap
+                            WebViewPlugin.webViewPlugin.callDebugCallback();
+                        }
+                }
+
+                return true;
+            }
+        });
     }
 
     public static boolean showLoading() {
@@ -44,7 +94,7 @@ public class WebViewActivity extends CordovaActivity {
             public void run() {
                 dialog = new Dialog(activity2,android.R.style.Theme_Translucent_NoTitleBar);
                 ProgressBar progressBar = new ProgressBar(activity2,null,android.R.attr.progressBarStyle);
-                
+
                 LinearLayout linearLayout = new LinearLayout(activity2);
                 linearLayout.setOrientation(LinearLayout.VERTICAL);
                 RelativeLayout layoutPrincipal = new RelativeLayout(activity2);

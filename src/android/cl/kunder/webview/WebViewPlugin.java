@@ -8,6 +8,7 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaInterface;
 
+import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +21,9 @@ public class WebViewPlugin extends CordovaPlugin {
   private static final String LOG_TAG = "WebViewPlugin";
   private static CallbackContext subscribeCallbackContext = null;
   private static CallbackContext subscribeExitCallbackContext = null;
+  private static CallbackContext subscribeDebugCallbackContext = null;
+  public static WebViewPlugin webViewPlugin = null;
+  public static WebViewActivity webViewActivity = null;
 
   public WebViewPlugin() {
 
@@ -36,6 +40,7 @@ public class WebViewPlugin extends CordovaPlugin {
   */
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
     super.initialize(cordova, webView);
+    webViewPlugin = this;
   }
 
   /**
@@ -78,6 +83,15 @@ public class WebViewPlugin extends CordovaPlugin {
       r.put("responseCode", "ok");
       callbackContext.success(r);
     }
+    else if(action.equals("load")) {
+      LOG.d(LOG_TAG, "Web View Load Url");
+      if (webViewActivity == null) {
+          execute("show", args, callbackContext);
+      } else {
+          final String url = args.getString(0);
+          webViewActivity.loadUrl(url);
+      }
+    }
 
     else if(action.equals("hideLoading")) {
       LOG.d(LOG_TAG, "Hide Web View Loading");
@@ -96,6 +110,11 @@ public class WebViewPlugin extends CordovaPlugin {
     else if(action.equals("subscribeCallback")){
       LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
       subscribeCallbackContext = callbackContext;
+    }
+
+    else if(action.equals("subscribeDebugCallback")){
+        LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
+        subscribeDebugCallbackContext = callbackContext;
     }
 
     else if(action.equals("subscribeExitCallback")){
@@ -136,6 +155,16 @@ public class WebViewPlugin extends CordovaPlugin {
       LOG.d(LOG_TAG, "Calling subscribeCallbackContext success");
       subscribeCallbackContext.success();
       subscribeCallbackContext = null;
+    }
+  }
+
+  public void callDebugCallback() {
+    if(subscribeDebugCallbackContext != null){
+      LOG.d(LOG_TAG, "Calling subscribeCallbackContext success");
+      this.cordova.getActivity().finish();
+      PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+      pluginResult.setKeepCallback(true);
+      subscribeDebugCallbackContext.sendPluginResult(pluginResult);
     }
   }
 }
