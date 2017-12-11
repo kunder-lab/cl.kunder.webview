@@ -88,7 +88,6 @@
 
       dispatch_async(dispatch_get_main_queue(), ^{
         [self.viewController dismissViewControllerAnimated:YES completion:nil];
-        [self dispose];
       });
 
       CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
