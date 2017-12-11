@@ -75,9 +75,7 @@ public class WebViewActivity extends CordovaActivity {
 
                         lastTapTimeMs = System.currentTimeMillis();
 
-                        if (numberOfTaps == 3) {
-                            Toast.makeText(getApplicationContext(), "triple", Toast.LENGTH_SHORT).show();
-                            //handle triple tap
+                        if (numberOfTaps == 5) {
                             WebViewPlugin.webViewPlugin.callDebugCallback();
                         }
                 }

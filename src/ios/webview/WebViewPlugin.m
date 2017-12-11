@@ -67,7 +67,7 @@
           webViewController = [[WebViewController alloc] init];
           webViewController.delegate = self; // esto es para poder recibir el evento de que webView se cerro
           webViewController.startPage = url;
-          [self.viewController presentViewController:webViewController animated:YES completion:nil];
+          [self.viewController presentViewController:webViewController animated:NO completion:nil];
       });
 
       CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -135,8 +135,8 @@
     [super viewDidLoad];
 
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureTriggered:)];
-    [tapGestureRecognizer setNumberOfTapsRequired:3];
-    [tapGestureRecognizer setNumberOfTouchesRequired:2];
+    [tapGestureRecognizer setNumberOfTapsRequired:5];
+    [tapGestureRecognizer setNumberOfTouchesRequired:1];
     [self.webView addGestureRecognizer:tapGestureRecognizer];
 }
 
