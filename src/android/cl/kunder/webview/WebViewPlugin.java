@@ -144,13 +144,12 @@ public class WebViewPlugin extends CordovaPlugin {
     Intent i = new Intent(this.cordova.getActivity(), WebViewActivity.class);
     i.putExtra("url", url);
     i.putExtra("shouldShowLoading", shouldShowLoading);
-    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     this.cordova.getActivity().getApplicationContext().startActivity(i);
   }
 
   private void hideWebView() {
     LOG.d(LOG_TAG, "hideWebView");
-    this.cordova.getActivity().finish();
+    WebViewPlugin.webViewActivity.finish();
     if(subscribeCallbackContext != null){
       LOG.d(LOG_TAG, "Calling subscribeCallbackContext success");
       subscribeCallbackContext.success();
@@ -161,7 +160,6 @@ public class WebViewPlugin extends CordovaPlugin {
   public void callDebugCallback() {
     if(subscribeDebugCallbackContext != null){
       LOG.d(LOG_TAG, "Calling subscribeCallbackContext success");
-      this.cordova.getActivity().finish();
       PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
       pluginResult.setKeepCallback(true);
       subscribeDebugCallbackContext.sendPluginResult(pluginResult);
