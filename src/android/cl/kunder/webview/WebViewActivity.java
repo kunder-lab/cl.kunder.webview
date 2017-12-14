@@ -22,6 +22,8 @@ import org.apache.cordova.CordovaActivity;
 public class WebViewActivity extends CordovaActivity {
     static Dialog dialog;
     static Activity activity2;
+    private boolean hasPausedEver;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,5 +141,23 @@ public class WebViewActivity extends CordovaActivity {
             }
         });
         return true;
+    }
+
+    public String getUrl() {
+        return appView.getUrl();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (hasPausedEver && WebViewPlugin.webViewPlugin != null) {
+            WebViewPlugin.webViewPlugin.callResumeCallback();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hasPausedEver = true;
     }
 }

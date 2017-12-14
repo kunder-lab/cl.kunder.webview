@@ -22,6 +22,7 @@ public class WebViewPlugin extends CordovaPlugin {
   private static CallbackContext subscribeCallbackContext = null;
   private static CallbackContext subscribeExitCallbackContext = null;
   private static CallbackContext subscribeDebugCallbackContext = null;
+  private static CallbackContext subscribeResumeCallbackContext = null;
   public static WebViewPlugin webViewPlugin = null;
   public static WebViewActivity webViewActivity = null;
 
@@ -92,6 +93,20 @@ public class WebViewPlugin extends CordovaPlugin {
           webViewActivity.loadUrl(url);
       }
     }
+    else if(action.equals("reload")) {
+        LOG.d(LOG_TAG, "Web View Reload");
+        if (webViewActivity == null) {
+          LOG.d(LOG_TAG, "Web View is not initialized.");
+        } else {
+          webViewActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+              final String url = webViewActivity.getUrl();
+              webViewActivity.loadUrl(url);
+            }
+          });
+        }
+    }
 
     else if(action.equals("hideLoading")) {
       LOG.d(LOG_TAG, "Hide Web View Loading");
@@ -115,6 +130,11 @@ public class WebViewPlugin extends CordovaPlugin {
     else if(action.equals("subscribeDebugCallback")){
         LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
         subscribeDebugCallbackContext = callbackContext;
+    }
+
+    else if(action.equals("subscribeResumeCallback")){
+        LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
+        subscribeResumeCallbackContext = callbackContext;
     }
 
     else if(action.equals("subscribeExitCallback")){
@@ -163,6 +183,15 @@ public class WebViewPlugin extends CordovaPlugin {
       PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
       pluginResult.setKeepCallback(true);
       subscribeDebugCallbackContext.sendPluginResult(pluginResult);
+    }
+  }
+
+  public void callResumeCallback() {
+    if(subscribeResumeCallbackContext != null){
+      LOG.d(LOG_TAG, "Calling subscribeCallbackContext success");
+      PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+      pluginResult.setKeepCallback(true);
+      subscribeResumeCallbackContext.sendPluginResult(pluginResult);
     }
   }
 }

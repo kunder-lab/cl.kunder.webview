@@ -19,6 +19,7 @@
 
 - (void)pluginInitialize {
     [self adjustBehavior];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onResume) name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
 - (void)webViewAdjustmenBehavior:(CDVInvokedUrlCommand*)command{
@@ -53,9 +54,35 @@
     }];
 }
 
+- (void)subscribeResumeCallback:(CDVInvokedUrlCommand*)command
+{
+    [self.commandDelegate runInBackground:^{
+        @try {
+            resumeCallback = command.callbackId;
+        }
+        @catch (NSException *exception) {
+            NSString* reason=[exception reason];
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: reason];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
+    }];
+}
+
 - (void)load:(CDVInvokedUrlCommand*)command{
-    NSString* url =(NSString*)[command.arguments objectAtIndex:0];
-    [self.webViewController loadURL:url];
+    if (self.webViewController == nil) {
+        [self show:command];
+    } else {
+        NSString* url =(NSString*)[command.arguments objectAtIndex:0];
+        [self.webViewController loadURL:url];
+    }
+}
+
+- (void)reload:(CDVInvokedUrlCommand*)command{
+    if (self.webViewController == nil) {
+        NSLog(@"Web View is not initialized.");
+    } else {
+        [self.webViewController reload];
+    }
 }
 
 - (void)show:(CDVInvokedUrlCommand*)command{
@@ -120,6 +147,17 @@
   [self.commandDelegate sendPluginResult:pluginResult callbackId:debugCallback];
 }
 
+-(void)callResumeCallback{
+    NSLog(@"callDebugCallback");
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [pluginResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:resumeCallback];
+}
+
+- (void) onResume {
+    [self callResumeCallback];
+}
+
 @end
 
 @implementation WebViewController
@@ -157,6 +195,11 @@
 - (void)loadURL: (NSString *)url
 {
     [self.webViewEngine loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
+}
+
+- (void)reload
+{
+    [self.webViewEngine loadRequest:[NSURLRequest requestWithURL:[self.webViewEngine URL]]];
 }
 
 @end
