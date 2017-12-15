@@ -1,12 +1,11 @@
 /*global cordova, module */
 'use strict';
 module.exports = (function() {
-
   var _show = function(url, successCallback, errorCallback, loading) {
-    if(loading){
+    if(loading) {
       cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'show', [url, loading]);
     }
-    else{
+    else {
       cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'show', [url]);
     }
   };

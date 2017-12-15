@@ -24,7 +24,7 @@ under the License.
 @class WebViewController;
 
 @protocol WebViewDelegate
-  -(void)webViewFinished;
+- (void)webViewFinished;
 @end
 
 
@@ -51,8 +51,8 @@ under the License.
 
 @interface WebViewController <UIGestureRecognizerDelegate> : CDVViewController
 {}
-  @property (nonatomic, assign) id  delegate;
-  - (void)viewDidDisappear:(BOOL)animated;
-  - (void)loadURL: (NSString *)url;
-  - (void)reload;
+@property (nonatomic, assign) id  delegate;
+- (void)viewDidDisappear:(BOOL)animated;
+- (void)loadURL:(NSString *)url;
+- (void)reload;
 @end

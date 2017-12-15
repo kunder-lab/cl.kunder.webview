@@ -1,20 +1,15 @@
 package cl.kunder.webview;
 
-
 import android.content.Intent;
-
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaInterface;
-
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.apache.cordova.LOG;
-
-
 
 public class WebViewPlugin extends CordovaPlugin {
 
@@ -87,33 +82,33 @@ public class WebViewPlugin extends CordovaPlugin {
     else if(action.equals("load")) {
       LOG.d(LOG_TAG, "Web View Load Url");
       if (webViewActivity == null) {
-          execute("show", args, callbackContext);
+        execute("show", args, callbackContext);
       } else {
-          final String url = args.getString(0);
-          webViewActivity.loadUrl(url);
+        final String url = args.getString(0);
+        webViewActivity.loadUrl(url);
       }
     }
     else if(action.equals("reload")) {
-        LOG.d(LOG_TAG, "Web View Reload");
-        if (webViewActivity == null) {
-          LOG.d(LOG_TAG, "Web View is not initialized.");
-        } else {
-          webViewActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-              final String url = webViewActivity.getUrl();
-              webViewActivity.loadUrl(url);
-            }
-          });
-        }
+      LOG.d(LOG_TAG, "Web View Reload");
+      if (webViewActivity == null) {
+        LOG.d(LOG_TAG, "Web View is not initialized.");
+      } else {
+        webViewActivity.runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+            final String url = webViewActivity.getUrl();
+            webViewActivity.loadUrl(url);
+          }
+        });
+      }
     }
 
     else if(action.equals("hideLoading")) {
       LOG.d(LOG_TAG, "Hide Web View Loading");
-      try{
+      try {
         WebViewActivity.hideLoading();
       }
-      catch(Exception e){
+      catch(Exception e) {
         LOG.e(LOG_TAG, "Error in hideLoading");
         LOG.e(LOG_TAG, e.toString());
       }
@@ -122,27 +117,27 @@ public class WebViewPlugin extends CordovaPlugin {
       callbackContext.success(r);
     }
 
-    else if(action.equals("subscribeCallback")){
+    else if(action.equals("subscribeCallback")) {
       LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
       subscribeCallbackContext = callbackContext;
     }
 
-    else if(action.equals("subscribeDebugCallback")){
-        LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
-        subscribeDebugCallbackContext = callbackContext;
+    else if(action.equals("subscribeDebugCallback")) {
+      LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
+      subscribeDebugCallbackContext = callbackContext;
     }
 
-    else if(action.equals("subscribeResumeCallback")){
-        LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
-        subscribeResumeCallbackContext = callbackContext;
+    else if(action.equals("subscribeResumeCallback")) {
+      LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
+      subscribeResumeCallbackContext = callbackContext;
     }
 
-    else if(action.equals("subscribeExitCallback")){
+    else if(action.equals("subscribeExitCallback")) {
       LOG.d(LOG_TAG, "Subscribing Cordova ExitCallbackContext");
       subscribeExitCallbackContext = callbackContext;
     }
 
-    else if(action.equals("exitApp")){
+    else if(action.equals("exitApp")) {
       LOG.d(LOG_TAG, "Exiting app?");
       if(subscribeExitCallbackContext != null){
         subscribeExitCallbackContext.success();
