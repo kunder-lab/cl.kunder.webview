@@ -10,19 +10,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.apache.cordova.LOG;
+import android.net.Uri;
+import android.provider.Browser;
 
 public class WebViewPlugin extends CordovaPlugin {
 
   private static final String LOG_TAG = "WebViewPlugin";
+  public static WebViewPlugin webViewPlugin = null;
+  public static WebViewActivity webViewActivity = null;
+
   private static CallbackContext subscribeCallbackContext = null;
   private static CallbackContext subscribeExitCallbackContext = null;
   private static CallbackContext subscribeDebugCallbackContext = null;
   private static CallbackContext subscribeResumeCallbackContext = null;
-  public static WebViewPlugin webViewPlugin = null;
-  public static WebViewActivity webViewActivity = null;
+  private static CallbackContext subscribeUrlCallbackContext = null;
 
   public WebViewPlugin() {
-
   }
 
   /**
@@ -59,7 +62,6 @@ public class WebViewPlugin extends CordovaPlugin {
         shouldShowLoading = args.getBoolean(1);
       }
       catch(Exception e){
-
       }
       if(!"".equals(url)) {
         showWebView(url, shouldShowLoading);
@@ -70,7 +72,6 @@ public class WebViewPlugin extends CordovaPlugin {
       else {
         callbackContext.error("Empty Parameter url");
       }
-
     }
     else if(action.equals("hide")) {
       LOG.d(LOG_TAG, "Hide Web View");
@@ -102,7 +103,6 @@ public class WebViewPlugin extends CordovaPlugin {
         });
       }
     }
-
     else if(action.equals("hideLoading")) {
       LOG.d(LOG_TAG, "Hide Web View Loading");
       try {
@@ -116,27 +116,26 @@ public class WebViewPlugin extends CordovaPlugin {
       r.put("responseCode", "ok");
       callbackContext.success(r);
     }
-
     else if(action.equals("subscribeCallback")) {
       LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
       subscribeCallbackContext = callbackContext;
     }
-
     else if(action.equals("subscribeDebugCallback")) {
       LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
       subscribeDebugCallbackContext = callbackContext;
     }
-
     else if(action.equals("subscribeResumeCallback")) {
       LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
       subscribeResumeCallbackContext = callbackContext;
     }
-
+    else if(action.equals("subscribeUrlCallback")){
+      LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
+      subscribeUrlCallbackContext = callbackContext;
+    }
     else if(action.equals("subscribeExitCallback")) {
       LOG.d(LOG_TAG, "Subscribing Cordova ExitCallbackContext");
       subscribeExitCallbackContext = callbackContext;
     }
-
     else if(action.equals("exitApp")) {
       LOG.d(LOG_TAG, "Exiting app?");
       if(subscribeExitCallbackContext != null){
@@ -144,9 +143,7 @@ public class WebViewPlugin extends CordovaPlugin {
         subscribeExitCallbackContext = null;
       }
       this.cordova.getActivity().finish();
-
     }
-
     else {
       return false;
     }
@@ -188,5 +185,36 @@ public class WebViewPlugin extends CordovaPlugin {
       pluginResult.setKeepCallback(true);
       subscribeResumeCallbackContext.sendPluginResult(pluginResult);
     }
+  }
+
+  public void callUrlCallback(String url) {
+    if(subscribeDebugCallbackContext != null){
+      LOG.d(LOG_TAG, "Calling subscribeCallbackContext success");
+      PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, url);
+      pluginResult.setKeepCallback(true);
+      subscribeUrlCallbackContext.sendPluginResult(pluginResult);
+    }
+  }
+
+  @Override
+  public boolean onOverrideUrlLoading(String url) {
+    LOG.d(LOG_TAG, "OverrideUrl#onOverrideUrlLoading: " + url);
+    String regex = preferences.getString("OverrideUrlRegex", "");
+    if (url.matches(regex)) {
+      callUrlCallback(url);
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  public Boolean shouldAllowNavigation(String url) {
+    LOG.d(LOG_TAG, "OverrideUrl#shouldAllowNavigation: " + url);
+    String regex = preferences.getString("OverrideUrlRegex", "");
+    if (url.matches(regex)) {
+      callUrlCallback(url);
+      return false;
+    }
+    return true;
   }
 }

@@ -63,6 +63,21 @@
   }];
 }
 
+- (void)subscribeUrlCallback:(CDVInvokedUrlCommand*)command
+{
+  [self.commandDelegate runInBackground:^{
+    @try {
+      urlCallback = command.callbackId;
+    }
+    @catch (NSException *exception) {
+      NSString* reason=[exception reason];
+      CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: reason];
+      [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }
+  }];
+}
+
+
 - (void)load:(CDVInvokedUrlCommand*)command {
   if (self.webViewController == nil) {
     [self show:command];
@@ -127,7 +142,7 @@
   exit(0);
 }
 
--(void)webViewFinished {
+- (void)webViewFinished {
   NSLog(@"webViewFinished");
   webViewController = nil;
 
@@ -135,19 +150,38 @@
   [self.commandDelegate sendPluginResult:pluginResult callbackId:webViewFinishedCallBack];
 }
 
--(void)callDebugCallback {
+- (void)callDebugCallback {
   NSLog(@"callDebugCallback");
   CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
   [pluginResult setKeepCallbackAsBool:YES];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:debugCallback];
 }
 
--(void)callResumeCallback {
+- (void)callResumeCallback {
   NSLog(@"callDebugCallback");
   CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
   [pluginResult setKeepCallbackAsBool:YES];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:resumeCallback];
 }
+
+- (void)callUrlCallback:(NSString*)url {
+  NSLog(@"callUrlCallback");
+  CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:url];
+  [pluginResult setKeepCallbackAsBool:YES];
+  [self.commandDelegate sendPluginResult:pluginResult callbackId:urlCallback];
+}
+
+- (BOOL)shouldOverrideLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
+  NSString *regex = [self.commandDelegate.settings objectForKey:[@"OverrideUrlRegex" lowercaseString]];
+  NSRange range = [request.URL.absoluteString rangeOfString:regex options:NSRegularExpressionSearch];
+
+  if (range.location != NSNotFound) {
+    [self callUrlCallback:request.URL.absoluteString];
+    return NO;
+  }
+  return YES;
+}
+
 
 - (void) onResume {
   [self callResumeCallback];
@@ -167,14 +201,16 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
+  // register plugin for shouldOverrideLoadWithRequest
+  [self.pluginObjects setObject:delegate forKey:@"WebViewPlugin"];
+
   UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureTriggered:)];
   [tapGestureRecognizer setNumberOfTapsRequired:5];
   [tapGestureRecognizer setNumberOfTouchesRequired:1];
   [self.webView addGestureRecognizer:tapGestureRecognizer];
 }
 
-- (void) tapGestureTriggered: (UITapGestureRecognizer *)recognizer
-{
+- (void) tapGestureTriggered: (UITapGestureRecognizer *)recognizer {
     //Code to handle the gesture
   NSLog(@"WebViewController tapGestureTriggered");
   [delegate callDebugCallback];
@@ -187,14 +223,17 @@
   delegate = nil;
 }
 
-- (void)loadURL: (NSString *)url
-{
+- (void)loadURL: (NSString *)url {
   [self.webViewEngine loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
 }
 
-- (void)reload
-{
+- (void)reload {
   [self.webViewEngine loadRequest:[NSURLRequest requestWithURL:[self.webViewEngine URL]]];
+}
+
+- (void)dealloc {
+  // de-register plugin to keep it from being disposed in implicit call to [super dealloc]
+  [self.pluginObjects removeObjectForKey:@"WebViewPlugin"];
 }
 
 @end

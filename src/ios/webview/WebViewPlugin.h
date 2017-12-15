@@ -33,12 +33,14 @@ under the License.
   @private NSString* webViewFinishedCallBack;
   @private NSString* debugCallback;
   @private NSString* resumeCallback;
+  @private NSString* urlCallback;
 }
 @property (nonatomic, retain) WebViewController* webViewController;
 
 - (void)subscribeCallback:(CDVInvokedUrlCommand*)command;
 - (void)subscribeDebugCallback:(CDVInvokedUrlCommand*)command;
 - (void)subscribeResumeCallback:(CDVInvokedUrlCommand*)command;
+- (void)subscribeUrlCallback:(CDVInvokedUrlCommand*)command;
 - (void)show:(CDVInvokedUrlCommand*)command;
 - (void)load:(CDVInvokedUrlCommand*)command;
 - (void)reload:(CDVInvokedUrlCommand*)command;
@@ -46,6 +48,9 @@ under the License.
 - (void)exitApp:(CDVInvokedUrlCommand*)command;
 - (void)webViewAdjustmenBehavior:(CDVInvokedUrlCommand*)command;
 - (void)webViewFinished;
+- (void)callDebugCallback;
+- (void)callUrlCallback:(NSString*)url;
+- (BOOL)shouldOverrideLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType;
 
 @end
 

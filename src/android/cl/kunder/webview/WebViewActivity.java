@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import org.apache.cordova.CordovaActivity;
+import org.apache.cordova.PluginEntry;
 
 public class WebViewActivity extends CordovaActivity {
   static Dialog dialog;
@@ -49,39 +50,42 @@ public class WebViewActivity extends CordovaActivity {
 
       @Override
       public boolean onTouch(View v, MotionEvent event) {
-
         switch (event.getAction()) {
           case MotionEvent.ACTION_DOWN:
-          touchDownMs = System.currentTimeMillis();
-          break;
-          case MotionEvent.ACTION_UP:
-          handler.removeCallbacksAndMessages(null);
-
-          if ((System.currentTimeMillis() - touchDownMs) > ViewConfiguration.getTapTimeout()) {
-                            //it was not a tap
-
-            numberOfTaps = 0;
-            lastTapTimeMs = 0;
+            touchDownMs = System.currentTimeMillis();
             break;
-          }
+          case MotionEvent.ACTION_UP:
+            handler.removeCallbacksAndMessages(null);
 
-          if (numberOfTaps > 0
-            && (System.currentTimeMillis() - lastTapTimeMs) < ViewConfiguration.getDoubleTapTimeout()) {
-            numberOfTaps += 1;
-        } else {
-          numberOfTaps = 1;
+            if ((System.currentTimeMillis() - touchDownMs) > ViewConfiguration.getTapTimeout()) {
+              //it was not a tap
+              numberOfTaps = 0;
+              lastTapTimeMs = 0;
+              break;
+            }
+
+            if (numberOfTaps > 0
+              && (System.currentTimeMillis() - lastTapTimeMs) < ViewConfiguration.getDoubleTapTimeout()) {
+              numberOfTaps += 1;
+            } else {
+              numberOfTaps = 1;
+            }
+
+            lastTapTimeMs = System.currentTimeMillis();
+
+            if (numberOfTaps == 5) {
+              WebViewPlugin.webViewPlugin.callDebugCallback();
+            }
         }
-
-        lastTapTimeMs = System.currentTimeMillis();
-
-        if (numberOfTaps == 5) {
-          WebViewPlugin.webViewPlugin.callDebugCallback();
-        }
+        return false;
       }
+    });
+  }
 
-      return false;
-    }
-  });
+  @Override
+  protected void init() {
+    super.init();
+    appView.getPluginManager().addService(new PluginEntry("WebViewPlugin", WebViewPlugin.webViewPlugin));
   }
 
   public static boolean showLoading() {
