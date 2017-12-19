@@ -50,6 +50,7 @@ under the License.
 - (void)webViewFinished;
 - (void)callDebugCallback;
 - (void)callUrlCallback:(NSString*)url;
+- (void)callResumeCallback:(NSString*)url;
 - (BOOL)shouldOverrideLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType;
 
 @end

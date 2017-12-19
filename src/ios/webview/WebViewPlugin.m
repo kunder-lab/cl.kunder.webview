@@ -157,9 +157,9 @@
   [self.commandDelegate sendPluginResult:pluginResult callbackId:debugCallback];
 }
 
-- (void)callResumeCallback {
+- (void)callResumeCallback:(NSString*)url {
   NSLog(@"callDebugCallback");
-  CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:url];
   [pluginResult setKeepCallbackAsBool:YES];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:resumeCallback];
 }
@@ -184,7 +184,7 @@
 
 
 - (void) onResume {
-  [self callResumeCallback];
+  [self callResumeCallback:[self.webViewController.webViewEngine URL].absoluteString];
 }
 
 @end

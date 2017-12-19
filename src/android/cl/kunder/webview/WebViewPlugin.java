@@ -178,10 +178,10 @@ public class WebViewPlugin extends CordovaPlugin {
     }
   }
 
-  public void callResumeCallback() {
+  public void callResumeCallback(String url) {
     if(subscribeResumeCallbackContext != null){
       LOG.d(LOG_TAG, "Calling subscribeCallbackContext success");
-      PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+      PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, url);
       pluginResult.setKeepCallback(true);
       subscribeResumeCallbackContext.sendPluginResult(pluginResult);
     }

@@ -152,7 +152,7 @@ public class WebViewActivity extends CordovaActivity {
   protected void onResume() {
     super.onResume();
     if (hasPausedEver && WebViewPlugin.webViewPlugin != null) {
-      WebViewPlugin.webViewPlugin.callResumeCallback();
+      WebViewPlugin.webViewPlugin.callResumeCallback(getUrl());
     }
   }
 
