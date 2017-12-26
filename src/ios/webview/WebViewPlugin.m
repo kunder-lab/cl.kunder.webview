@@ -6,7 +6,7 @@
 #import "WebViewPlugin.h"
 
 @implementation WebViewPlugin
-static NSArray* results;
+NSArray* results;
 
 @synthesize webViewController;
 
