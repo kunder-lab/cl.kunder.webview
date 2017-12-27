@@ -81,9 +81,9 @@ __Parameters__:
 
 ### Close/Hide
 __Parameters__:
-- __params__: Parameterers that want to be delivered to the parent webview through the SubscribeCallback method. _(Array)_
 - __successCallback__: Is triggered when the plugin is succesfully called. _(Function)_
 - __errorCallback__: Is triggered when the plugin fails to be called or is called with error. _(Function)_
+- __params__: Parameterers that want to be delivered to the parent webview through the SubscribeCallback method. _(Array)_
 
 ### HideLoading
 Close the loading shown by Show method.
