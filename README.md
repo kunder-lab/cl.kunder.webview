@@ -81,7 +81,7 @@ __Parameters__:
 Close the loading shown by Show method.
 
 __Parameters__:
-- __sucessCallback__: The callback that will be called when the loading is closed. _(Function optional)_
+- __successCallback__: The callback that will be called when the loading is closed. _(Function optional)_
 - __errorCallback__: Is triggered when the plugin fails to be called or is called with error. _(Function optional)_
 
 ### SubscribeCallback
@@ -107,4 +107,4 @@ This method execute objective-C exit(0) method.
 
 ### SetWebViewBehavior (iOS)
 This method adjust the size of the current webview using the iOS 11 status bar space. This method should be called at the beginning of the app.
-No parameters required. 
+No parameters required.
