@@ -79,6 +79,13 @@ __Parameters__:
 - __successCallback__: The callback that will be called when a webview is closed. It contains an array of parameteres given by the Close/Hide method called in the child webview. _(Function)_
 - __errorCallback__: Is triggered when the plugin fails to be called or is called with error. _(Function)_
 
+#### Usage
+```js
+// Main webview
+// This will be fired on second webview close
+webview.SubscribeCallback(function(params) { console.log(params); }, function(){ console.log('error'); })
+``` 
+
 ### Close/Hide
 __Parameters__:
 - __successCallback__: Is triggered when the plugin is succesfully called. _(Function)_
