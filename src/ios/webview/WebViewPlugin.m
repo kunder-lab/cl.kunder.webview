@@ -6,6 +6,7 @@
 #import "WebViewPlugin.h"
 
 @implementation WebViewPlugin
+NSArray* results;
 
 @synthesize webViewController;
 
@@ -66,7 +67,7 @@
   NSLog(@"hidewebViewView");
   [self.commandDelegate runInBackground:^{
     @try {
-
+      results = command.arguments;
       dispatch_async(dispatch_get_main_queue(), ^{
         [self.viewController dismissViewControllerAnimated:YES completion:nil];
         [self dispose];
@@ -89,10 +90,13 @@
 
 -(void)webViewFinished{
   NSLog(@"webViewFinished");
+  if (webViewFinishedCallBack) {
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:results];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:webViewFinishedCallBack];
+    webViewFinishedCallBack = nil;
+    results = nil;
+  }
   webViewController = nil;
-
-  CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-  [self.commandDelegate sendPluginResult:pluginResult callbackId:webViewFinishedCallBack];
 }
 
 @end

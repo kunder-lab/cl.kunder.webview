@@ -20,6 +20,7 @@ public class WebViewPlugin extends CordovaPlugin {
   private static final String LOG_TAG = "WebViewPlugin";
   private static CallbackContext subscribeCallbackContext = null;
   private static CallbackContext subscribeExitCallbackContext = null;
+  private static JSONArray results = null;
 
   public WebViewPlugin() {
 
@@ -73,6 +74,7 @@ public class WebViewPlugin extends CordovaPlugin {
     }
     else if(action.equals("hide")) {
       LOG.d(LOG_TAG, "Hide Web View");
+      results = args;
       hideWebView();
       JSONObject r = new JSONObject();
       r.put("responseCode", "ok");
@@ -131,11 +133,12 @@ public class WebViewPlugin extends CordovaPlugin {
 
   private void hideWebView() {
     LOG.d(LOG_TAG, "hideWebView");
-    this.cordova.getActivity().finish();
     if(subscribeCallbackContext != null){
       LOG.d(LOG_TAG, "Calling subscribeCallbackContext success");
-      subscribeCallbackContext.success();
+      subscribeCallbackContext.success(results);
       subscribeCallbackContext = null;
+      results = null;
     }
+    this.cordova.getActivity().finish();
   }
 }

@@ -12,8 +12,8 @@ module.exports = (function() {
     }
   };
 
-  var _hide = function(successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'hide', []);
+  var _hide = function(params, successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'hide', params);
   };
 
   var _hideLoading = function(successCallback, errorCallback) {
