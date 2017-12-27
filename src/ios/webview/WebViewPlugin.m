@@ -9,6 +9,22 @@
 
 @synthesize webViewController;
 
+- (void)adjustBehavior{
+  #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    if (@available(iOS 11.0, *)) {
+        [self.webView.scrollView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
+    }
+  #endif
+}
+
+- (void)pluginInitialize {
+    [self adjustBehavior];
+}
+
+- (void)webViewAdjustmenBehavior:(CDVInvokedUrlCommand*)command{
+  [self adjustBehavior];
+}
+
 - (void)subscribeCallback:(CDVInvokedUrlCommand*)command
 {
     [self.commandDelegate runInBackground:^{
