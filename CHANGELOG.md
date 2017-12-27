@@ -1,5 +1,42 @@
 # CHANGELOG
 
+## 2.6.0
+
+### Description
+- New feature close webview with params
+- Fixes to readme
+
+#### Feature close with params
+Added params for `Close` method. The second webview can send parameters to the main webview on close.
+Usage: 
+```js
+// Second webview
+webview.Close(success, error, params)
+``` 
+
+To receive this parameters, use `webview.SubscribeCallback(success, error)`. Parameters will be passed along the `success` callback.
+
+```js
+// Main webview
+// This will be fired on second webview close
+webview.SubscribeCallback(function(params) { console.log(params); }, function(){ console.log('error'); })
+``` 
+
+### Breaking Changes
+No breaking changes on this release.
+
+### Changelog
+863478d25bf269b87792e1a94c3dfaa401daec26 - version bump 2.6.0
+aad2154111edb48c9ab6bb39b8f543df065c6073 - updated readme
+50e4d9a2546a1e26c6eae16fdf86ca94101651bd - readme updated
+2576dba679752a853ed89687eb8bfbbe3953024b - moving the new parameter of hide to the end to avoid making a breaking change
+8c4b0d612980be4230a160b90bf5143d99bb7a02 - changed the header of the readme
+f272b3dcb898cee62712d50b40753f867272390d - added new functionality to documentation
+014425c21d7ed5d4aa1caf47703db19981d3bdc6 - corrected a parameter that was not necessarely static
+0e03fe1e0e1879e50a1773d0b1ff91d4c00a72c1 - Added support for sending params when webview is closed
+83ffc54fc5dea1c882cb4681577d25a0c106bf04 - Update README.md
+9a8595d583e3603b2eb2a96df84c7754c47b4509 - Fixes spelling mistake.
+
 ## 2.5.1
 
 ### Description
