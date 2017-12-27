@@ -12,7 +12,7 @@ module.exports = (function() {
     }
   };
 
-  var _hide = function(params, successCallback, errorCallback) {
+  var _hide = function(successCallback, errorCallback, params) {
     cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'hide', params);
   };
 
