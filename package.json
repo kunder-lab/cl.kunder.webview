@@ -1,6 +1,6 @@
 {
   "name": "kunder-cordova-plugin-webview",
-  "version": "2.4.2",
+  "version": "2.5.1",
   "description": "This cordova plugin enables you to open a second webview in your app. This webview is totally independent from the main webview, but allows you tu access plugins and other Cordova resources. It's possible to modify this plugin to allow multiple webviews.",
   "cordova": {
     "id": "kunder-cordova-plugin-webview",

@@ -1,5 +1,29 @@
 # CHANGELOG
 
+## 2.5.1
+
+### Description
+Add pluginInitialize method to adjust iOS 11 webview using the status bar space.
+
+### Breaking Changes
+No breaking changes on this release.
+
+### Changelog
+56abb96a8a195c97e34336a10ee5624d89a452f3 - Se añade función pluginInitialize para corregir problemas de comportamiento al abrir una nueva webview.
+
+## 2.5.0
+
+### Description
+Add a method to adjust iOS 11 webview using the status bar space. This is a temporary fix for iOS 11 grey status bar bug.
+This change does not fix iPhone X spaces.
+
+### Breaking Changes
+No breaking changes on this release.
+
+### Changelog
+08467a8f93f376c75999a6cf4e7957f6c69e6d4e - Se añade función para ajustar el comportamiento de la vista en iOS 11
+4daeeee456b461b872d7c252a6f3503cc7c4e836 - Se agrega método para deshabilitar statusbar en ios11
+
 ## 2.4.2
 
 ### Description
