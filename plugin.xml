@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="kunder-cordova-plugin-webview"
-  version="2.5.1">
+  version="2.6.0">
   <name>Cordova Second Webview</name>
   <author href="http://kunder.cl">kunder</author>
   <description>
@@ -12,7 +12,7 @@
 
     It's possible to modify this plugin to allow multiple webviews.
   </description>
-  <repo>https://github.com/arturokunder/cl.kunder.webview.git</repo>
+  <repo>https://github.com/arturokunder/cl.kunder.webview</repo>
   <issue>https://github.com/arturokunder/cl.kunder.webview/issues</issue>
   <license>Apache 2.0</license>
   <keywords>cordova, webview</keywords>
