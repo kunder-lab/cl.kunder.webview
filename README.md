@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-# cl.kunder.webview
+# kunder-cordova-plugin-webview
 This cordova plugin enables you to open a second webview in your app.
 This webview is totally independent from the main webview, but allows you tu access plugins and other Cordova resources.
 
