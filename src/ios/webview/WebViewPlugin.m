@@ -223,6 +223,24 @@
   delegate = nil;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+  if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+    CGRect viewBounds = [self.webView bounds];
+    viewBounds.origin.y = 20;
+    viewBounds.size.height = viewBounds.size.height - 20;
+    self.webView.frame = viewBounds;
+  }
+
+  self.view.backgroundColor = [UIColor colorWithRed:0.17 green:0.20 blue:0.23 alpha:1.0];
+
+  [super viewWillAppear:animated];
+}
+
+-(UIStatusBarStyle)preferredStatusBarStyle {
+  return UIStatusBarStyleLightContent;
+}
+
 - (void)loadURL: (NSString *)url {
   [self.webViewEngine loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
 }
