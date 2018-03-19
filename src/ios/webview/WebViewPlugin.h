@@ -33,6 +33,7 @@ under the License.
   @private NSString* webViewFinishedCallBack;
   @private NSString* debugCallback;
   @private NSString* resumeCallback;
+  @private NSString* pauseCallback;
   @private NSString* urlCallback;
 }
 @property (nonatomic, retain) WebViewController* webViewController;
@@ -40,6 +41,7 @@ under the License.
 - (void)subscribeCallback:(CDVInvokedUrlCommand*)command;
 - (void)subscribeDebugCallback:(CDVInvokedUrlCommand*)command;
 - (void)subscribeResumeCallback:(CDVInvokedUrlCommand*)command;
+- (void)subscribePauseCallback:(CDVInvokedUrlCommand*)command;
 - (void)subscribeUrlCallback:(CDVInvokedUrlCommand*)command;
 - (void)show:(CDVInvokedUrlCommand*)command;
 - (void)load:(CDVInvokedUrlCommand*)command;

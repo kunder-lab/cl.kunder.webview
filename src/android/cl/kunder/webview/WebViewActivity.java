@@ -160,5 +160,6 @@ public class WebViewActivity extends CordovaActivity {
   protected void onPause() {
     super.onPause();
     hasPausedEver = true;
+    WebViewPlugin.webViewPlugin.callPauseCallback(getUrl());
   }
 }

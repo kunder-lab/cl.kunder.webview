@@ -23,6 +23,7 @@ public class WebViewPlugin extends CordovaPlugin {
   private static CallbackContext subscribeExitCallbackContext = null;
   private static CallbackContext subscribeDebugCallbackContext = null;
   private static CallbackContext subscribeResumeCallbackContext = null;
+  private static CallbackContext subscribePauseCallbackContext = null;
   private static CallbackContext subscribeUrlCallbackContext = null;
 
   public WebViewPlugin() {
@@ -125,8 +126,12 @@ public class WebViewPlugin extends CordovaPlugin {
       subscribeDebugCallbackContext = callbackContext;
     }
     else if(action.equals("subscribeResumeCallback")) {
-      LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
+      LOG.d(LOG_TAG, "Subscribing Cordova ResumeCallbackContext");
       subscribeResumeCallbackContext = callbackContext;
+    }
+    else if(action.equals("subscribePauseCallback")) {
+      LOG.d(LOG_TAG, "Subscribing Cordova PauseCallbackContext");
+      subscribePauseCallbackContext = callbackContext;
     }
     else if(action.equals("subscribeUrlCallback")){
       LOG.d(LOG_TAG, "Subscribing Cordova CallbackContext");
@@ -180,10 +185,19 @@ public class WebViewPlugin extends CordovaPlugin {
 
   public void callResumeCallback(String url) {
     if(subscribeResumeCallbackContext != null){
-      LOG.d(LOG_TAG, "Calling subscribeCallbackContext success");
+      LOG.d(LOG_TAG, "Calling subscribeResumeCallbackContext success");
       PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, url);
       pluginResult.setKeepCallback(true);
       subscribeResumeCallbackContext.sendPluginResult(pluginResult);
+    }
+  }
+
+  public void callPauseCallback(String url) {
+    if(subscribePauseCallbackContext != null){
+      LOG.d(LOG_TAG, "Calling subscribePauseCallbackContext success");
+      PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, url);
+      pluginResult.setKeepCallback(true);
+      subscribePauseCallbackContext.sendPluginResult(pluginResult);
     }
   }
 

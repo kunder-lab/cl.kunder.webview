@@ -17,7 +17,14 @@
 
 - (void)pluginInitialize {
   [self adjustBehavior];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onResume) name:UIApplicationWillEnterForegroundNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+    selector:@selector(onResume)
+    name:UIApplicationWillEnterForegroundNotification
+    object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+    selector:@selector(onPause)
+    name:UIApplicationWillResignActiveNotification
+    object:nil];
 }
 
 - (void)webViewAdjustmenBehavior:(CDVInvokedUrlCommand*)command {
@@ -54,6 +61,19 @@
   [self.commandDelegate runInBackground:^{
     @try {
       resumeCallback = command.callbackId;
+    }
+    @catch (NSException *exception) {
+      NSString* reason=[exception reason];
+      CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: reason];
+      [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }
+  }];
+}
+
+- (void)subscribePauseCallback:(CDVInvokedUrlCommand*)command {
+  [self.commandDelegate runInBackground:^{
+    @try {
+      pauseCallback = command.callbackId;
     }
     @catch (NSException *exception) {
       NSString* reason=[exception reason];
@@ -158,10 +178,17 @@
 }
 
 - (void)callResumeCallback:(NSString*)url {
-  NSLog(@"callDebugCallback");
+  NSLog(@"callResumeCallback");
   CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:url];
   [pluginResult setKeepCallbackAsBool:YES];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:resumeCallback];
+}
+
+- (void)callPauseCallback:(NSString*)url {
+  NSLog(@"callPauseCallback");
+  CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:url];
+  [pluginResult setKeepCallbackAsBool:YES];
+  [self.commandDelegate sendPluginResult:pluginResult callbackId:pauseCallback];
 }
 
 - (void)callUrlCallback:(NSString*)url {
@@ -182,9 +209,12 @@
   return YES;
 }
 
-
 - (void) onResume {
   [self callResumeCallback:[self.webViewController.webViewEngine URL].absoluteString];
+}
+
+- (void) onPause {
+  [self callPauseCallback:[self.webViewController.webViewEngine URL].absoluteString];
 }
 
 @end
