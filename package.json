@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-second-webview",
-  "version": "2.8.2",
+  "version": "2.8.3",
   "description": "Fork of kunder.cl webview plugin",
   "cordova": {
     "id": "cordova-plugin-second-webview",
