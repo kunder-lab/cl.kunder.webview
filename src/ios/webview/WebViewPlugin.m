@@ -225,12 +225,21 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+  // adjust web view height for status bar
+  CGFloat offset = 0;
   if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
-    CGRect viewBounds = [self.webView bounds];
-    viewBounds.origin.y = 20;
-    viewBounds.size.height = viewBounds.size.height - 20;
-    self.webView.frame = viewBounds;
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && UIScreen.mainScreen.nativeBounds.size.height == 2436) {
+      // iPhone X
+      offset = 44;
+    } else {
+      offset = 20;
+    }
   }
+
+  CGRect viewBounds = [self.webView bounds];
+  viewBounds.origin.y = offset;
+  viewBounds.size.height = viewBounds.size.height - offset;
+  self.webView.frame = viewBounds;
 
   self.view.backgroundColor = [UIColor colorWithRed:0.17 green:0.20 blue:0.23 alpha:1.0];
 
