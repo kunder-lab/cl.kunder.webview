@@ -39,6 +39,10 @@ module.exports = (function() {
     cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'subscribeResumeCallback', []);
   };
 
+  var _subscribePauseCallback = function(successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'subscribePauseCallback', []);
+  };
+
   var _subscribeUrlCallback = function(successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'subscribeUrlCallback', []);
   };
@@ -64,6 +68,7 @@ module.exports = (function() {
     SubscribeCallback: _subscribeCallback,
     SubscribeDebugCallback: _subscribeDebugCallback,
     SubscribeResumeCallback: _subscribeResumeCallback,
+    SubscribePauseCallback: _subscribePauseCallback,
     SubscribeUrlCallback: _subscribeUrlCallback,
     SubscribeExitCallback: _subscribeExitCallback,
     ExitApp: _exitApp,
