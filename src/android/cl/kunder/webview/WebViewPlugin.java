@@ -201,10 +201,19 @@ public class WebViewPlugin extends CordovaPlugin {
     }
   }
 
-  public void callUrlCallback(String url) {
+  public void callUrlCallback(String url, boolean didNavigate) {
     if(subscribeDebugCallbackContext != null){
       LOG.d(LOG_TAG, "Calling subscribeCallbackContext success");
-      PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, url);
+
+      JSONObject result = new JSONObject();
+      try {
+        result.put("url", url);
+        result.put("didNavigate", didNavigate);
+      } catch (JSONException e) {
+        e.printStackTrace();
+      }
+
+      PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, result.toString());
       pluginResult.setKeepCallback(true);
       subscribeUrlCallbackContext.sendPluginResult(pluginResult);
     }
@@ -214,21 +223,33 @@ public class WebViewPlugin extends CordovaPlugin {
   public boolean onOverrideUrlLoading(String url) {
     LOG.d(LOG_TAG, "OverrideUrl#onOverrideUrlLoading: " + url);
     String regex = preferences.getString("OverrideUrlRegex", "");
+
+    boolean shouldNavigate = false;
     if (url.matches(regex)) {
-      callUrlCallback(url);
-      return true;
+      shouldNavigate = false;
+    } else {
+      shouldNavigate = true;
     }
-    return false;
+
+    callUrlCallback(url, shouldNavigate);
+
+    return !shouldNavigate;
   }
 
   @Override
   public Boolean shouldAllowNavigation(String url) {
     LOG.d(LOG_TAG, "OverrideUrl#shouldAllowNavigation: " + url);
     String regex = preferences.getString("OverrideUrlRegex", "");
+
+    boolean shouldNavigate = false;
     if (url.matches(regex)) {
-      callUrlCallback(url);
-      return false;
+      shouldNavigate = false;
+    } else {
+      shouldNavigate = true;
     }
-    return true;
+
+    callUrlCallback(url, shouldNavigate);
+
+    return shouldNavigate;
   }
 }
