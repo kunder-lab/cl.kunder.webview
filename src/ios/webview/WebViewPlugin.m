@@ -191,9 +191,14 @@
   [self.commandDelegate sendPluginResult:pluginResult callbackId:pauseCallback];
 }
 
-- (void)callUrlCallback:(NSString*)url {
+- (void)callUrlCallback:(NSString*)url didNavigate:(BOOL)didNavigate {
+  NSError  *error;
   NSLog(@"callUrlCallback");
-  CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:url];
+  NSDictionary *resultDictionary = @{@"url"         : url,
+                                     @"didNavigate" : [NSNumber numberWithBool:didNavigate]};
+  NSData   *serialized      = [NSJSONSerialization dataWithJSONObject:resultDictionary options:0 error:&error];
+  NSString *serializedString = [[NSString alloc] initWithData:serialized encoding:NSUTF8StringEncoding];
+  CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:serializedString];
   [pluginResult setKeepCallbackAsBool:YES];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:urlCallback];
 }
@@ -202,11 +207,16 @@
   NSString *regex = [self.commandDelegate.settings objectForKey:[@"OverrideUrlRegex" lowercaseString]];
   NSRange range = [request.URL.absoluteString rangeOfString:regex options:NSRegularExpressionSearch];
 
+  BOOL shouldNavigate = NO;
   if (range.location != NSNotFound) {
-    [self callUrlCallback:request.URL.absoluteString];
-    return NO;
+    shouldNavigate = NO;
+  } else {
+    shouldNavigate = YES;
   }
-  return YES;
+
+  [self callUrlCallback:request.URL.absoluteString didNavigate:shouldNavigate];
+
+  return shouldNavigate;
 }
 
 - (void) onResume {
