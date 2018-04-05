@@ -12,6 +12,8 @@ import org.json.JSONObject;
 import org.apache.cordova.LOG;
 import android.net.Uri;
 import android.provider.Browser;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class WebViewPlugin extends CordovaPlugin {
 
