@@ -224,12 +224,7 @@ public class WebViewPlugin extends CordovaPlugin {
     LOG.d(LOG_TAG, "OverrideUrl#onOverrideUrlLoading: " + url);
     String regex = preferences.getString("OverrideUrlRegex", "");
 
-    boolean shouldNavigate = false;
-    if (url.matches(regex)) {
-      shouldNavigate = false;
-    } else {
-      shouldNavigate = true;
-    }
+    boolean shouldNavigate = allowRequestUrl(url, preferences.getAll());
 
     callUrlCallback(url, shouldNavigate);
 
@@ -241,15 +236,38 @@ public class WebViewPlugin extends CordovaPlugin {
     LOG.d(LOG_TAG, "OverrideUrl#shouldAllowNavigation: " + url);
     String regex = preferences.getString("OverrideUrlRegex", "");
 
-    boolean shouldNavigate = false;
-    if (url.matches(regex)) {
-      shouldNavigate = false;
-    } else {
-      shouldNavigate = true;
-    }
+    boolean shouldNavigate = allowRequestUrl(url, preferences.getAll());
 
     callUrlCallback(url, shouldNavigate);
 
     return shouldNavigate;
+  }
+
+  private Boolean allowRequestUrl(String url, Map<String, String> preferences) {
+    ArrayList<String> allowRegexes = new ArrayList<String>();
+    ArrayList<String> disallowRegexes = new ArrayList<String>();
+
+    for (String key : preferences.keySet()) {
+      if (key.startsWith("allowrequesturl")) {
+        allowRegexes.add(preferences.get(key));
+      }
+      if (key.startsWith("disallowrequesturl")) {
+        disallowRegexes.add(preferences.get(key));
+      }
+    }
+
+    for (String regex : disallowRegexes) {
+      if (url.matches(regex)) {
+        return false;
+      }
+    }
+
+    for (String regex : allowRegexes) {
+      if (url.matches(regex)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
