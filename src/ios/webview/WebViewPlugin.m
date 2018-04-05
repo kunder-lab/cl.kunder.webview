@@ -204,19 +204,42 @@
 }
 
 - (BOOL)shouldOverrideLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
-  NSString *regex = [self.commandDelegate.settings objectForKey:[@"OverrideUrlRegex" lowercaseString]];
-  NSRange range = [request.URL.absoluteString rangeOfString:regex options:NSRegularExpressionSearch];
+  NSString *url = request.URL.absoluteString;
 
-  BOOL shouldNavigate = NO;
-  if (range.location != NSNotFound) {
-    shouldNavigate = NO;
-  } else {
-    shouldNavigate = YES;
-  }
-
-  [self callUrlCallback:request.URL.absoluteString didNavigate:shouldNavigate];
+  BOOL shouldNavigate = [self allowRequestUrl:url preferences:self.commandDelegate.settings];
+  [self callUrlCallback:url didNavigate:shouldNavigate];
 
   return shouldNavigate;
+}
+
+- (BOOL)allowRequestUrl:(NSString*)url preferences:(NSDictionary*)preferences {
+  NSMutableArray *allowRegexes = [NSMutableArray arrayWithCapacity:10];
+  NSMutableArray *disallowRegexes = [NSMutableArray arrayWithCapacity:10];
+
+  for (id key in preferences) {
+    if ([key hasPrefix:@"allowrequesturl"]) {
+      [allowRegexes addObject:[self.commandDelegate.settings objectForKey:key]];
+    }
+    if ([key hasPrefix:@"disallowrequesturl"]) {
+      [disallowRegexes addObject:[self.commandDelegate.settings objectForKey:key]];
+    }
+  }
+
+  for (id regex in disallowRegexes) {
+    NSRange range = [url rangeOfString:regex options:NSRegularExpressionSearch];
+    if (range.location != NSNotFound) {
+      return NO;
+    }
+  }
+
+  for (id regex in allowRegexes) {
+    NSRange range = [url rangeOfString:regex options:NSRegularExpressionSearch];
+    if (range.location != NSNotFound) {
+      return YES;
+    }
+  }
+
+  return NO;
 }
 
 - (void) onResume {
