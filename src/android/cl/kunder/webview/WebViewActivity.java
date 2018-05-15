@@ -85,6 +85,10 @@ public class WebViewActivity extends CordovaActivity {
   @Override
   protected void init() {
     super.init();
+
+    if (WebViewPlugin.webViewPlugin == null) {
+      return;
+    }
     appView.getPluginManager().addService(new PluginEntry("WebViewPlugin", WebViewPlugin.webViewPlugin));
   }
 
