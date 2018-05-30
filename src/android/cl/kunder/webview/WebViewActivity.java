@@ -34,7 +34,7 @@ public class WebViewActivity extends CordovaActivity {
         if(shouldShowLoading){
             showLoading();
         }
-        loadUrl((url.matches("^(.*://|javascript:)[\\s\\S]*$")?"":"file:///android_asset/www/")+url);
+        loadUrl((url.matches("^(.*://|javascript:)[\\s\\S]*$")?"":"file:///android_asset/www/+++/")+url);
     }
 
     public static boolean showLoading() {
