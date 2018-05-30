@@ -166,4 +166,10 @@ public class WebViewActivity extends CordovaActivity {
     hasPausedEver = true;
     WebViewPlugin.webViewPlugin.callPauseCallback(getUrl());
   }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    WebViewPlugin.webViewPlugin.callExitCallback();
+  }
 }
