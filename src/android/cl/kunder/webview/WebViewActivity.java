@@ -34,7 +34,8 @@ public class WebViewActivity extends CordovaActivity {
         if(shouldShowLoading){
             showLoading();
         }
-        loadUrl((url.matches("^(.*://|javascript:)[\\s\\S]*$")?"":"file:///android_asset/www/+++/")+url);
+        
+        loadUrl((url.matches("^(.://|javascript:)[\\s\\S]$") ? "" : "file:///android_asset/www/" + (isPluginCryptFileActive() ? "+++/" : "")) + url);
     }
 
     public static boolean showLoading() {
@@ -91,5 +92,18 @@ public class WebViewActivity extends CordovaActivity {
             }
         });
         return true;
+    }
+
+    /**
+     * Revisa si existe el plugin cordova-plugin-crypt-file
+     * @return boolean
+     */
+    private boolean isPluginCryptFileActive() {
+        try {
+            Class.forName("com.tkyaji.cordova.DecryptResource");
+            return true;
+        } catch(Exception e) {
+            return false;
+        }
     }
 }
