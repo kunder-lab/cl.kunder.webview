@@ -13,7 +13,7 @@ module.exports = (function() {
   };
 
   var _hide = function(successCallback, errorCallback, params) {
-    cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'hide', params);
+    cordova.exec(successCallback, errorCallback, 'WebViewPlugin', 'hide', params ? params : []);
   };
 
   var _hideLoading = function(successCallback, errorCallback) {
