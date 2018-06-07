@@ -73,7 +73,7 @@ public class WebViewActivity extends CordovaActivity {
 
             lastTapTimeMs = System.currentTimeMillis();
 
-            if (numberOfTaps == 5) {
+            if (numberOfTaps == 5 && WebViewPlugin.webViewPlugin != null) {
               WebViewPlugin.webViewPlugin.callDebugCallback();
             }
         }
@@ -172,6 +172,8 @@ public class WebViewActivity extends CordovaActivity {
   @Override
   public void onDestroy() {
     super.onDestroy();
-    WebViewPlugin.webViewPlugin.callExitCallback();
+    if (WebViewPlugin.webViewPlugin != null) {
+      WebViewPlugin.webViewPlugin.callExitCallback();
+    }
   }
 }
