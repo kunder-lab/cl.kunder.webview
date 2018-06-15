@@ -163,7 +163,7 @@ public class WebViewPlugin extends CordovaPlugin {
     Intent i = new Intent(this.cordova.getActivity(), WebViewActivity.class);
     i.putExtra("url", url);
     i.putExtra("shouldShowLoading", shouldShowLoading);
-    this.cordova.getActivity().getApplicationContext().startActivity(i);
+    this.cordova.getActivity().startActivity(i);
   }
 
   private void hideWebView() {
