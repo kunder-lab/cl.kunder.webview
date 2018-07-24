@@ -35,7 +35,7 @@ public class WebViewActivity extends CordovaActivity {
             showLoading();
         }
         
-        loadUrl((url.matches("^(.://|javascript:)[\\s\\S]$") ? "" : "file:///android_asset/www/" + (isPluginCryptFileActive() ? "+++/" : "")) + url);
+        loadUrl((url.matches("^(.*://|javascript:)[\\s\\S]*$") ? "" : "file:///android_asset/www/" + (isPluginCryptFileActive() ? "+++/" : "")) + url);
     }
 
     public static boolean showLoading() {
