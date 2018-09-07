@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## 2.7.1
+### Description
+- Hotfix for issue [#43](https://github.com/kunder-lab/cl.kunder.webview/issues/43): Plugin automatically adds the prefix file:///android_asset/www/ on Android.
+
+### Breaking Changes
+No breaking changes on this release.
+
+### Changelog
+f00c01769300e715da82c19bdc0ab627672eff2b - updated readme
+3c0bad8e33395bc1428caf4e30a7738615a938f5 - version bump 2.7.1
+3adecc73c4aed777ceeeb1b076c7649d51c797bd - FIXED #43
+bc9b239433badf584d47c79fd68232d39a853bc6 - restore url-prefix regex to v2.6.0 functionality
+
+## 2.7.0
+
+### Description
+- Added support for encrypted assets with [cordova-plugin-crypt-file](https://github.com/tkyaji/cordova-plugin-crypt-file)
+
+### Breaking Changes
+No breaking changes on this release.
+
+### Changelog
+88a6ef6a068a685dd3e08608ed36eeda29d68a7a - Se modifica hide para funcionamiento sin parametros
+d8a3edf8a3ed6937bf35e98fa264d8eb106dfc6e - Se deja función estandar para ecriptación archivos
+09883983e716622fa040237bc06617a1de8b0a28 - Se modifica ruta
+
 ## 2.6.0
 
 ### Description
