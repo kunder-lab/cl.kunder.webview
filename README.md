@@ -116,3 +116,8 @@ This method execute objective-C exit(0) method.
 ### SetWebViewBehavior (iOS)
 This method adjust the size of the current webview using the iOS 11 status bar space. This method should be called at the beginning of the app.
 No parameters required.
+
+## Other
+### Cordova Crypt File Plugin compatibility
+This plugin is compatible with Cordova Crypt File Plugin. It will detect it automatically and will use decrypted assets files.
+For more information about Crypt File Plugin, please visit the [plugin repo](https://github.com/tkyaji/cordova-plugin-crypt-file).
