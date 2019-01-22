@@ -289,14 +289,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
   // adjust web view height for status bar
-  CGFloat offset = 0;
-  if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && UIScreen.mainScreen.nativeBounds.size.height == 2436) {
-      // iPhone X
-      offset = 44;
-    } else {
-      offset = 20;
-    }
+  CGFloat offset = 20;
+  if (@available(iOS 11.0, *)) {
+    // safeAreaInsets is only available ios >= 11
+    // and min iphone version with a notch is ios 11
+    offset = [[[UIApplication sharedApplication] delegate] window].safeAreaInsets.top;
   }
 
   CGRect viewBounds = [self.webView bounds];
