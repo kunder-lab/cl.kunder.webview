@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2.8.0
+### Description
+- Se cambia lógica de comprobación de existencia para plugin wkwebview-polyfill
+
+### Breaking Changes
+No breaking changes on this release.
+
+### Changelog
+1343e497f1e4686d5f13e04388cca69c636063d8 - Version bump --versión 2.8.0
+d294bc32eabf288b7444bb31202aaf41cf590ab3 - Se modifica lógica que verifica la existencia de plugin wkwebview-polyfill
+
 ## 2.7.1
 ### Description
 - Hotfix for issue [#43](https://github.com/kunder-lab/cl.kunder.webview/issues/43): Plugin automatically adds the prefix file:///android_asset/www/ on Android.

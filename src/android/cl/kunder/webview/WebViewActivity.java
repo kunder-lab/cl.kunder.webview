@@ -35,7 +35,7 @@ public class WebViewActivity extends CordovaActivity {
             showLoading();
         }
         
-        loadUrl((url.matches("^(.*://|javascript:)[\\s\\S]*$") ? "" : "file:///android_asset/www/" + (isPluginCryptFileActive() ? "+++/" : "")) + url);
+        loadUrl((url.matches("^(.*://|javascript:)[\\s\\S]*$") ? "" : "file:///android_asset/www/" + (isPluginWkwebviewPolyfillActive() ? "+++/" : "")) + url);
     }
 
     public static boolean showLoading() {
@@ -95,12 +95,23 @@ public class WebViewActivity extends CordovaActivity {
     }
 
     /**
-     * Revisa si existe el plugin cordova-plugin-crypt-file
+     * Revisa si existe el plugin cordova-plugin-wkwebview-polyfill
      * @return boolean
      */
-    private boolean isPluginCryptFileActive() {
+    private boolean isPluginWkwebviewPolyfillActive() {
+        return classExists("com.tkyj.cdv.DR") || classExists("com.tkyaji.cordova.DecryptResource");
+    }
+
+
+    /**
+     * Revisa si existe la clase con nombre className dentro del
+     * contexto donde esté integrado este plugin
+     * @param className Nombre de clase
+     * @return boolean
+     */
+    private boolean classExists(String className) {
         try {
-            Class.forName("com.tkyaji.cordova.DecryptResource");
+            Class.forName(className);
             return true;
         } catch(Exception e) {
             return false;
