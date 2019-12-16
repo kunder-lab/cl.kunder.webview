@@ -124,6 +124,11 @@
         webViewController = [[WebViewController alloc] init];
           webViewController.delegate = self; // esto es para poder recibir el evento de que webView se cerro
           webViewController.startPage = url;
+
+          // iOS 13 changes the default modalPresentationStyle to a card,
+          // for our app we want to keep the fullscreen presentation style
+          webViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+
           [self.viewController presentViewController:webViewController animated:NO completion:nil];
         });
 
