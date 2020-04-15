@@ -21,6 +21,16 @@ under the License.
 #import <Cordova/CDVPlugin.h>
 #import <Cordova/CDVViewController.h>
 
+#if WK_WEB_VIEW_ONLY
+#define CDVWebViewNavigationType int
+#define CDVWebViewNavigationTypeLinkClicked 0
+#define CDVWebViewNavigationTypeOther 5
+#else
+#define CDVWebViewNavigationType UIWebViewNavigationType
+#define CDVWebViewNavigationTypeLinkClicked UIWebViewNavigationTypeLinkClicked
+#define CDVWebViewNavigationTypeOther UIWebViewNavigationTypeOther
+#endif
+
 @class WebViewController;
 
 @protocol WebViewDelegate
@@ -53,7 +63,7 @@ under the License.
 - (void)callDebugCallback;
 - (void)callUrlCallback:(NSString*)url;
 - (void)callResumeCallback:(NSString*)url;
-- (BOOL)shouldOverrideLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType;
+- (BOOL)shouldOverrideLoadWithRequest:(NSURLRequest*)request navigationType:(CDVWebViewNavigationType)navigationType;
 
 @end
 

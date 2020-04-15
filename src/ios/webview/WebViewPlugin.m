@@ -208,7 +208,7 @@
   [self.commandDelegate sendPluginResult:pluginResult callbackId:urlCallback];
 }
 
-- (BOOL)shouldOverrideLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
+- (BOOL)shouldOverrideLoadWithRequest:(NSURLRequest*)request navigationType:(CDVWebViewNavigationType)navigationType {
   NSString *url = request.URL.absoluteString;
 
   BOOL shouldNavigate = [self allowRequestUrl:url preferences:self.commandDelegate.settings];
